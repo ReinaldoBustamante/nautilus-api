@@ -1,23 +1,27 @@
-import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { BcryptAdapter } from './adapters/bcrypt.adapter';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import { PrismaService } from 'src/prisma.service';
 import { LoginUserDto } from './dtos/LoginUser.dto';
 import { JWTAdapter } from './adapters/jwt.adapter';
+import { RoleName, RoleService } from 'src/roles.service';
 
 @Injectable()
 export class AuthService {
     constructor(
         private bcryptAdapter: BcryptAdapter,
         private jwtAdapter: JWTAdapter,
-        private prisma: PrismaService
+        private prisma: PrismaService,
+        private roleService: RoleService
     ) { }
 
     async create(payload: CreateUserDto) {
         const user = {
             ...payload,
-            password: await this.bcryptAdapter.encryptPassword(payload.password)
+            password: await this.bcryptAdapter.encryptPassword(payload.password),
+            role_id: this.roleService.getRoleId(RoleName.PATIENT)
         }
+
         try {
             const { password, ...newUser } = await this.prisma.user.create({
                 data: user

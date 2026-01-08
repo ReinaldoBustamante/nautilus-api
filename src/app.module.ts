@@ -11,7 +11,8 @@ import { AuthModule } from './auth/auth.module';
       envFilePath: '.env',
     }),
     SpecializationModule, 
-    SpecializationModule, AuthModule
+    SpecializationModule, 
+    AuthModule
   ],
   controllers: [],
   providers: [],

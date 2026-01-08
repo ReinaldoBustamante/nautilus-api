@@ -14,8 +14,4 @@ export class CreateUserDto {
     @Matches(/[^A-Za-z0-9]/, { message: 'Must contain at least one symbol' })
     @IsNotEmpty()
     password: string
-
-    @IsNotEmpty()
-    @IsUUID()
-    role_id: string
 }
