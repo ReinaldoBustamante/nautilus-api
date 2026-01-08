@@ -3,7 +3,8 @@ import { PrismaService } from "./prisma.service";
 
 
 export enum RoleName {
-  ADMIN = 'admin',
+  ADMIN = 'administrator',
+  DOCTOR = 'doctor',
   PATIENT = 'patient',
 }
 

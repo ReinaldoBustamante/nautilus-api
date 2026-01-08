@@ -1,16 +1,16 @@
-import { ConflictException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { BcryptAdapter } from './adapters/bcrypt.adapter';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import { PrismaService } from 'src/prisma.service';
 import { LoginUserDto } from './dtos/LoginUser.dto';
-import { JWTAdapter } from './adapters/jwt.adapter';
+
 import { RoleName, RoleService } from 'src/roles.service';
+import { JWTAdapter } from 'src/common/adapters/jwt.adapter';
 
 @Injectable()
 export class AuthService {
     constructor(
         private bcryptAdapter: BcryptAdapter,
-        private jwtAdapter: JWTAdapter,
         private prisma: PrismaService,
         private roleService: RoleService
     ) { }
@@ -46,7 +46,7 @@ export class AuthService {
         if(!isValidPassword) throw new UnauthorizedException('Invalid credentials');
         return {
             email: user.email,
-            token: this.jwtAdapter.generateToken({
+            token: JWTAdapter.generateToken({
                 sub: user.id,
                 role_id: user.role_id
             })
