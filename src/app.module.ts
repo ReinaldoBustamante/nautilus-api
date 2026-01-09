@@ -4,10 +4,8 @@ import { SpecializationModule } from './specialization/specialization.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { ServiceModule } from './service/service.module';
-import { AppointmentModule } from './appointment/appointment.module';
 import { PatientModule } from './patient/patient.module';
 import { DoctorModule } from './doctor/doctor.module';
-import { DoctorScheduleModule } from './doctor_schedule/doctor_schedule.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -18,7 +16,7 @@ import { UserModule } from './user/user.module';
     }),
     SpecializationModule, 
     SpecializationModule, 
-    AuthModule, ServiceModule, AppointmentModule, PatientModule, DoctorModule, DoctorScheduleModule, UserModule
+    AuthModule, ServiceModule, PatientModule, DoctorModule, UserModule
   ],
   controllers: [],
   providers: [],

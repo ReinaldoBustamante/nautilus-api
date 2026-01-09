@@ -4,7 +4,6 @@ import { CreateUserDto } from './dtos/CreateUser.dto';
 import { PrismaService } from 'src/prisma.service';
 import { LoginUserDto } from './dtos/LoginUser.dto';
 
-import { RoleName, RoleService } from 'src/roles.service';
 import { JWTAdapter } from 'src/common/adapters/jwt.adapter';
 
 @Injectable()
@@ -12,14 +11,12 @@ export class AuthService {
     constructor(
         private bcryptAdapter: BcryptAdapter,
         private prisma: PrismaService,
-        private roleService: RoleService
     ) { }
 
     async create(payload: CreateUserDto) {
         const user = {
             ...payload,
-            password: await this.bcryptAdapter.encryptPassword(payload.password),
-            role_id: this.roleService.getRoleId(RoleName.PATIENT)
+            password: await this.bcryptAdapter.encryptPassword(payload.password)
         }
 
         try {
@@ -48,7 +45,7 @@ export class AuthService {
             email: user.email,
             token: JWTAdapter.generateToken({
                 sub: user.id,
-                role_id: user.role_id
+                role: user.role
             })
         } 
     }

@@ -2,14 +2,14 @@ import { Body, Controller, Delete, ForbiddenException, Get, Param, Post, Req, Us
 import { SpecializationService } from './specialization.service';
 import { CreateSpecializationDto } from './dtos/createSpecialization.dto';
 import { AuthGuard } from 'src/common/guards/auth/auth.guard';
-import { RoleName, RoleService } from 'src/roles.service';
-import { JwtPayload } from 'src/common/interfaces/jwt-payload.interface';
+import { RolesGuard } from 'src/common/guards/roles/roles.guard';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { Role } from 'src/roles.enum';
 
 @Controller('specialization')
 export class SpecializationController {
     constructor(
         private readonly specializationService: SpecializationService,
-        private readonly roleService: RoleService
     ) { }
 
     @Get()
@@ -17,19 +17,17 @@ export class SpecializationController {
         return this.specializationService.findAll()
     }
 
+    @UseGuards(AuthGuard, RolesGuard)
+    @Roles(Role.ADMIN)
     @Post()
-    @UseGuards(AuthGuard)
-    createSpecialization(@Body() payload: CreateSpecializationDto, @Req() req: Request) {
-        const { role_id } = req["user"] as JwtPayload
-        if (role_id !== this.roleService.getRoleId(RoleName.ADMIN)) throw new ForbiddenException('You don\'t have enough permission')
+    createSpecialization(@Body() payload: CreateSpecializationDto) {
         return this.specializationService.create(payload)
     }
 
+    @UseGuards(AuthGuard, RolesGuard)
+    @Roles(Role.ADMIN)
     @Delete(':id')
-    @UseGuards(AuthGuard)
-    deleteSpecialization(@Param('id') id: string, @Req() req: Request) {
-        const { role_id } = req["user"] as JwtPayload
-        if (role_id !== this.roleService.getRoleId(RoleName.ADMIN)) throw new ForbiddenException('You don\'t have enough permission')
+    deleteSpecialization(@Param('id') id: string) {
         return this.specializationService.delete(id)
     }
 }
