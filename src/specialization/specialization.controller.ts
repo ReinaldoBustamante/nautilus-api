@@ -12,14 +12,18 @@ export class SpecializationController {
         private readonly specializationService: SpecializationService,
     ) { }
 
-    @Get()
+    @Get('')
     findSpecializations() {
         return this.specializationService.findAll()
+    }
+    @Get(':id/services')
+    findServicesBySpecialiation(@Param('id') id: string){
+        return this.specializationService.findServicesBySpecializationId(id)
     }
 
     @UseGuards(AuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
-    @Post()
+    @Post('')
     createSpecialization(@Body() payload: CreateSpecializationDto) {
         return this.specializationService.create(payload)
     }

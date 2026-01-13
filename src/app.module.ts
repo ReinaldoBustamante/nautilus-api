@@ -1,24 +1,25 @@
 import { Module } from '@nestjs/common';
 
-import { SpecializationModule } from './specialization/specialization.module';
+
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import { ServiceModule } from './service/service.module';
-import { PatientModule } from './patient/patient.module';
-import { DoctorModule } from './doctor/doctor.module';
+
 import { UserModule } from './user/user.module';
+import { ServiceModule } from './service/service.module';
+import { SpecializationModule } from './specialization/specialization.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, 
+      isGlobal: true,
       envFilePath: '.env',
     }),
-    SpecializationModule, 
-    SpecializationModule, 
-    AuthModule, ServiceModule, PatientModule, DoctorModule, UserModule
+    SpecializationModule,
+    AuthModule,
+    UserModule,
+    ServiceModule
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }
