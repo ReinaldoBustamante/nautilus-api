@@ -31,8 +31,6 @@ model appointment {
   address_id            String             @db.Uuid
   appointment_status_id String             @db.Uuid
   address               address            @relation(fields: [address_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_appointment_address")
-  doctor                doctor             @relation(fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_appointment_doctor")
-  patient               patient            @relation(fields: [patient_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_appointment_patient")
   appointment_status    appointment_status @relation(fields: [appointment_status_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_appointment_status")
 
   @@unique([date, doctor_id])
@@ -45,15 +43,13 @@ model appointment_status {
 }
 
 model doctor {
-  id                String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name              String            @db.VarChar(200)
-  phonenumber       String            @unique @db.VarChar(20)
-  rut               String            @unique @db.VarChar(20)
-  created_at        DateTime?         @default(now()) @db.Timestamp(6)
-  specialization_id String            @db.Uuid
-  user_id           String            @db.Uuid
-  appointment       appointment[]
-  doctor_schedule   doctor_schedule[]
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name              String    @db.VarChar(200)
+  phonenumber       String    @unique @db.VarChar(20)
+  rut               String    @unique @db.VarChar(20)
+  created_at        DateTime? @default(now()) @db.Timestamp(6)
+  specialization_id String    @db.Uuid
+  user_id           String    @unique @db.Uuid
 }
 
 model doctor_schedule {
@@ -62,17 +58,15 @@ model doctor_schedule {
   start_time  DateTime @db.Time(6)
   end_time    DateTime @db.Time(6)
   doctor_id   String   @db.Uuid
-  doctor      doctor   @relation(fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_doctor_schedule_doctor")
 }
 
 model patient {
-  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String        @db.VarChar(200)
-  phonenumber String        @unique @db.VarChar(20)
-  rut         String        @unique @db.VarChar(20)
-  created_at  DateTime?     @default(now()) @db.Timestamp(6)
-  user_id     String?       @db.Uuid
-  appointment appointment[]
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String    @db.VarChar(200)
+  phonenumber String    @unique @db.VarChar(20)
+  rut         String    @unique @db.VarChar(20)
+  created_at  DateTime? @default(now()) @db.Timestamp(6)
+  user_id     String?   @unique @db.Uuid
 }
 
 model service {
@@ -96,13 +90,13 @@ model specialization {
 }
 
 model user {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  email      String    @unique @db.VarChar(200)
-  password   String    @db.VarChar(200)
-  created_at DateTime? @default(now()) @db.Timestamp(6)
-  role       roles     @default(patient)
-  is_active  Boolean?  @default(false)
-  deleted_at DateTime? @db.Timestamp(6)
+  id         String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email      String      @unique @db.VarChar(200)
+  password   String      @db.VarChar(200)
+  created_at DateTime?   @default(now()) @db.Timestamp(6)
+  role       roles       @default(patient)
+  status     status_user @default(active)
+  deleted_at DateTime?   @db.Timestamp(6)
 }
 
 enum roles {
@@ -116,4 +110,10 @@ enum status {
   accept
   reject
   completed
+}
+
+enum status_user {
+  active
+  inactive
+  suspended
 }

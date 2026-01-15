@@ -8,10 +8,9 @@ import { CreateServiceDto } from './dtos/CreateServiceDto';
 import { UpdateServiceDto } from './dtos/UpdateServiceDto';
 
 
-@Controller('services')
+@Controller('service')
 export class ServiceController {
     constructor(private readonly servicesService: ServiceService) { }
-
 
     @UseGuards(AuthGuard, RolesGuard)
     @Roles(Role.ADMIN)

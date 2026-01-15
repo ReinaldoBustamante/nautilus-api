@@ -16,10 +16,9 @@ export class AuthGuard implements CanActivate {
 
     const user = await this.prisma.user.findUnique({
       where: { id: decodedToken.sub },
-      select: { id: true, is_active: true, deleted_at: true }
+      select: { id: true, deleted_at: true }
     })
     if (!user) throw new UnauthorizedException('User don\'t exist in system')
-    if (!user?.is_active) throw new UnauthorizedException('User is disabled')
     if (user.deleted_at !== null) throw new UnauthorizedException('User is deleted')
     request["user"] = {
       sub: decodedToken.sub,

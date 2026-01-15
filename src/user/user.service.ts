@@ -9,8 +9,7 @@ export class UserService {
 
     async findAll() {
         const user = await this.prisma.user.findMany({
-            where: { deleted_at: null },
-            select: { id: true, email: true, role: true, is_active: true, created_at: true }
+            select: { id: true, email: true, role: true, status:true, created_at: true, deleted_at: true }
         })
         return user
     }
@@ -28,29 +27,6 @@ export class UserService {
         })
     }
 
-    async toggleStatus(id: string) {
-        const user = await this.prisma.user.findFirst({
-            where: { id, deleted_at: null },
-        })
-
-        if (!user) {
-            throw new NotFoundException('Usuario no encontrado')
-        }
-
-        return this.prisma.user.update({
-            where: { id },
-            data: { is_active: !user.is_active },
-            select: {
-                id: true,
-                email: true,
-                role: true,
-                is_active: true,
-                created_at: true,
-            },
-        })
-    }
-
-
     async delete(id: string) {
         const user = await this.prisma.user.update({
             where: {
@@ -63,7 +39,6 @@ export class UserService {
                 id: true,
                 email: true,
                 role: true,
-                is_active: true,
                 created_at: true,
                 deleted_at: true
             }

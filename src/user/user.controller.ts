@@ -36,13 +36,6 @@ export class UserController {
 
     @UseGuards(AuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
-    @Patch(':id/toggleStatus')
-    toggleUserStatus(@Param('id') id: string){
-        return this.userService.toggleStatus(id)
-    }
-
-    @UseGuards(AuthGuard, RolesGuard)
-    @Roles(Role.ADMIN)
     @Patch(':id/delete')
     deleteUser(@Param('id') id: string){
         return this.userService.delete(id)
