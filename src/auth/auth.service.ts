@@ -40,7 +40,7 @@ export class AuthService {
         })
         
         if(!user?.email) throw new UnauthorizedException('Invalid credentials');
-        if(user?.user_status === user_status_type.inactive) throw new UnauthorizedException('Invalid credentials');
+        if(user?.user_status !== user_status_type.active) throw new UnauthorizedException('Invalid credentials');
         const isValidPassword = await this.bcryptAdapter.comparePassword(user.password, payload.password)
         if(!isValidPassword) throw new UnauthorizedException('Invalid credentials');
         return {
