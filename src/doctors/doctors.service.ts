@@ -9,7 +9,9 @@ export class DoctorsService {
     constructor(private readonly prisma: PrismaService) { }
 
     async findAll() {
-        return await this.prisma.doctor.findMany();
+        return await this.prisma.doctor.findMany({
+            where: { deleted_at: null }
+        });
     }
 
     async findServicesByDoctor(id: string) {
@@ -58,7 +60,6 @@ export class DoctorsService {
     }
 
     async update(payload: UpdateDoctorDto, id: string) {
-
         const doctor = await this.prisma.doctor.findUnique({where: { id }})
         if (doctor?.deleted_at !== null) throw new NotFoundException('resource not found')
         return await this.prisma.doctor.update({
