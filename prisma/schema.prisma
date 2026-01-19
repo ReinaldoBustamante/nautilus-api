@@ -11,7 +11,7 @@ datasource db {
 model appointment {
   id                 String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   appointment_date   DateTime                @db.Timestamp(6)
-  address_snapshot   DateTime                @db.Timestamp(6)
+  address_snapshot   String                  @db.VarChar(100)
   comment            String
   appointment_status appointment_status_type @default(pending)
   service_id         String                  @db.Uuid
@@ -28,10 +28,10 @@ model appointment {
 model doctor {
   id                String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name              String            @db.VarChar(50)
-  phone_number      String            @unique @db.VarChar(50)
-  rut               String            @unique @db.VarChar(20)
+  phone_number      String            @db.VarChar(50)
+  rut               String            @db.VarChar(20)
   specialization_id String            @db.Uuid
-  user_id           String            @unique @db.Uuid
+  user_id           String            @db.Uuid
   created_at        DateTime          @default(now()) @db.Timestamp(6)
   updated_at        DateTime?         @db.Timestamp(6)
   deleted_at        DateTime?         @db.Timestamp(6)
@@ -51,15 +51,17 @@ model doctor_schedule {
   created_at  DateTime  @default(now()) @db.Timestamp(6)
   updated_at  DateTime? @db.Timestamp(6)
   doctor      doctor    @relation(fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_doctor_schedule_doctor")
+
+  @@unique([day_of_week, doctor_id, start_time])
 }
 
 model patient {
   id              String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name            String        @db.VarChar(50)
-  phone_number    String        @unique @db.VarChar(20)
-  rut             String        @unique @db.VarChar(20)
+  name            String        @db.VarChar(100)
+  phone_number    String        @db.VarChar(30)
+  rut             String        @db.VarChar(20)
   default_address String        @db.VarChar(100)
-  user_id         String?       @unique @db.Uuid
+  user_id         String?       @db.Uuid
   created_at      DateTime      @default(now()) @db.Timestamp(6)
   updated_at      DateTime?     @db.Timestamp(6)
   deleted_at      DateTime?     @db.Timestamp(6)
@@ -69,7 +71,7 @@ model patient {
 
 model service {
   id                String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name              String         @unique @db.VarChar(50)
+  name              String         @db.VarChar(50)
   description       String         @db.VarChar(200)
   price             Int
   specialization_id String         @db.Uuid
@@ -82,7 +84,7 @@ model service {
 
 model specialization {
   id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name       String    @unique @db.VarChar(50)
+  name       String    @db.VarChar(50)
   created_at DateTime  @default(now()) @db.Timestamp(6)
   updated_at DateTime? @db.Timestamp(6)
   deleted_at DateTime? @db.Timestamp(6)
@@ -92,15 +94,15 @@ model specialization {
 
 model user {
   id          String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  email       String           @unique @db.VarChar(50)
-  password    String           @db.VarChar(50)
+  email       String           @db.VarChar(100)
+  password    String           @db.VarChar(200)
   user_role   user_role_type   @default(patient)
   user_status user_status_type @default(inactive)
   created_at  DateTime         @default(now()) @db.Timestamp(6)
   updated_at  DateTime?        @db.Timestamp(6)
   deleted_at  DateTime?        @db.Timestamp(6)
-  doctor      doctor?
-  patient     patient?
+  doctor      doctor[]
+  patient     patient[]
 }
 
 enum appointment_status_type {
