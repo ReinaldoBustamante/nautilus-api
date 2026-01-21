@@ -5,9 +5,8 @@ import { UpdateDoctorDto } from './dtos/UpdateDoctorDto';
 
 @Injectable()
 export class DoctorsService {
-
     constructor(private readonly prisma: PrismaService) { }
-
+    
     async findAll() {
         return await this.prisma.doctor.findMany({
             where: { deleted_at: null }
@@ -16,11 +15,15 @@ export class DoctorsService {
 
     async findServicesByDoctor(id: string) {
         const doctor = await this.prisma.doctor.findUnique({
-            where: { id },
+            where: { id, deleted_at: null },
             include: {
                 specialization: {
                     include: {
-                        service: true
+                        service: {
+                            where: {
+                                deleted_at: null
+                            }
+                        }
                     }
                 }
             },
@@ -35,7 +38,7 @@ export class DoctorsService {
 
     async findScheduleByDoctor(id: string) {
         const doctor = await this.prisma.doctor.findUnique({
-            where: { id },
+            where: { id, deleted_at: null },
             include: {
                 doctor_schedule: true
             },
@@ -54,31 +57,37 @@ export class DoctorsService {
                 data: payload
             })
         } catch (err) {
-            if (err.code === 'P2002') throw new ConflictException('A unique field already exists in the database')
+            if (err.code === 'P2002') throw new ConflictException('resource already exists')
             throw err
         }
     }
 
     async update(payload: UpdateDoctorDto, id: string) {
-        const doctor = await this.prisma.doctor.findUnique({where: { id }})
-        if (doctor?.deleted_at !== null) throw new NotFoundException('resource not found')
-        return await this.prisma.doctor.update({
-            where: {id},
-            data: {
-                ...payload,
-                updated_at: new Date()
-            }
-        })
+        try {
+            return await this.prisma.doctor.update({
+                where: { id, deleted_at: null },
+                data: {
+                    ...payload,
+                    updated_at: new Date()
+                }
+            })
+        } catch (err) {
+            if (err.code === 'P2025') throw new NotFoundException('resource not found')
+            throw err
+        }
     }
 
     async delete(id: string) {
-        return this.prisma.doctor.update({
-            where: { id },
-            data: {
-                deleted_at: new Date()
-            }
-        })
+        try {
+            return await this.prisma.doctor.update({
+                where: { id, deleted_at: null },
+                data: {
+                    deleted_at: new Date()
+                }
+            })
+        } catch (err) {
+            if (err.code === 'P2025') throw new NotFoundException('resource not found')
+            throw err
+        }
     }
-
-
 }

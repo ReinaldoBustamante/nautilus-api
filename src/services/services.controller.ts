@@ -5,7 +5,6 @@ import { AuthGuard } from 'src/common/guards/auth/auth.guard';
 import { RolesGuard } from 'src/common/guards/roles/roles.guard';
 import { ServicesService } from './services.service';
 import { CreateServiceDto } from './dtos/CreateServiceDto';
-import { UpdateDoctorDto } from 'src/doctors/dtos/UpdateDoctorDto';
 import { UpdateServiceDto } from './dtos/UpdateServiceDto';
 
 @UseGuards(AuthGuard, RolesGuard)

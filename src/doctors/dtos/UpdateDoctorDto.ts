@@ -11,14 +11,6 @@ export class UpdateDoctorDto {
     phone_number: string
 
     @IsOptional()
-    @IsRut()
-    rut: string
-
-    @IsOptional()
     @IsUUID()
     specialization_id: string
-
-    @IsOptional()
-    @IsUUID()
-    user_id: string
 }

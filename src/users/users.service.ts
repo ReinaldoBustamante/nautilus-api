@@ -18,9 +18,10 @@ const USER_SELECT_FIELDS = {
 @Injectable()
 export class UsersService {
     constructor(private readonly prisma: PrismaService, private bcryptAdapter: BcryptAdapter) { }
-    
+
     async findAll() {
         return await this.prisma.user.findMany({
+            where: { deleted_at: null },
             select: USER_SELECT_FIELDS
         });
     }
@@ -44,7 +45,7 @@ export class UsersService {
                     ...payload,
                     updated_at: new Date()
                 },
-                where: { id },
+                where: { id, deleted_at: null },
                 select: USER_SELECT_FIELDS
             })
         } catch (err) {
@@ -59,7 +60,7 @@ export class UsersService {
             return await this.prisma.user.update({
                 data: { deleted_at: new Date(), user_status: 'deleted' },
                 select: USER_SELECT_FIELDS,
-                where: { id }
+                where: { id, deleted_at: null }
             })
         } catch (err) {
             if (err.code === 'P2025') throw new NotFoundException('Resource not found')

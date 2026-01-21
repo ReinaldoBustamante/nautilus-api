@@ -12,8 +12,4 @@ export class UpdatePatientDto {
     @IsString()
     @IsOptional()
     default_address: string
-
-    @IsUUID()
-    @IsOptional()
-    user_id: string
 }

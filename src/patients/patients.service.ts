@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CreatePatientDto } from './dtos/CreatePatientDto';
 import { UpdatePatientDto } from './dtos/UpdatePatientDto';
@@ -20,25 +20,34 @@ export class PatientsService {
                 data: payload
             })
         } catch (err) {
-            const fields = err.meta.driverAdapterError.cause.constraint.fields
-            if (fields.includes('rut')) throw new ConflictException('rut already exist')
+            if (err.code === 'P2002') throw new ConflictException('resource already exists')
             throw err
         }
     }
 
     async update(id: string, payload: UpdatePatientDto) {
-        return await this.prisma.patient.update({
-            where: { id },
-            data: payload
-        })
+        try {
+            return await this.prisma.patient.update({
+                where: { id, deleted_at: null },
+                data: payload
+            })
+        } catch (err) {
+            if (err.code === 'P2025') throw new NotFoundException('resource not found')
+            throw err
+        }
     }
 
     async delete(id: string) {
-        return await this.prisma.patient.update({
-            where: { id },
-            data: {
-                deleted_at: new Date()
-            }
-        })
+        try {
+            return await this.prisma.patient.update({
+                where: { id, deleted_at: null },
+                data: {
+                    deleted_at: new Date()
+                }
+            })
+        } catch (err) {
+            if (err.code === 'P2025') throw new NotFoundException('resource not found')
+            throw err
+        }
     }
 }
