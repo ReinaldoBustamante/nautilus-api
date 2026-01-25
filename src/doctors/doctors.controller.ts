@@ -15,15 +15,10 @@ export class DoctorsController {
     getDoctors() {
         return this.doctorService.findAll()
     }
-
-    @Get(':id/services')
-    getDoctorServices(@Param('id') id: string) {
-        return this.doctorService.findServicesByDoctor(id)
-    }
-
+    
     @Get(':id/schedule')
     getDoctorSchedule(@Param('id') id: string) {
-        return this.doctorService.findScheduleByDoctor(id)
+        return this.doctorService.findAvalaibleScheduleByDoctor(id)
     }
 
     @UseGuards(AuthGuard, RolesGuard)

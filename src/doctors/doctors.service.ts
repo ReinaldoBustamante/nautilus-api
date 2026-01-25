@@ -6,49 +6,15 @@ import { UpdateDoctorDto } from './dtos/UpdateDoctorDto';
 @Injectable()
 export class DoctorsService {
     constructor(private readonly prisma: PrismaService) { }
-    
+
     async findAll() {
         return await this.prisma.doctor.findMany({
             where: { deleted_at: null }
         });
     }
 
-    async findServicesByDoctor(id: string) {
-        const doctor = await this.prisma.doctor.findUnique({
-            where: { id, deleted_at: null },
-            include: {
-                specialization: {
-                    include: {
-                        service: {
-                            where: {
-                                deleted_at: null
-                            }
-                        }
-                    }
-                }
-            },
-        })
-        if (!doctor) throw new NotFoundException('resource not found')
-        return {
-            id: doctor.id,
-            name: doctor.name,
-            services: doctor.specialization?.service ?? []
-        }
-    }
-
-    async findScheduleByDoctor(id: string) {
-        const doctor = await this.prisma.doctor.findUnique({
-            where: { id, deleted_at: null },
-            include: {
-                doctor_schedule: true
-            },
-        })
-        if (!doctor) throw new NotFoundException('resource not found')
-        return {
-            id: doctor.id,
-            name: doctor.name,
-            schedule: doctor.doctor_schedule ?? []
-        }
+    async findAvalaibleScheduleByDoctor(id: string) {
+       return 'method not exist'
     }
 
     async create(payload: CreateDoctorDto) {

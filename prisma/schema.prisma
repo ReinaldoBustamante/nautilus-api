@@ -14,7 +14,6 @@ model appointment {
   address_snapshot   String                  @db.VarChar(100)
   comment            String
   appointment_status appointment_status_type @default(pending)
-  service_id         String                  @db.Uuid
   doctor_id          String                  @db.Uuid
   patient_id         String                  @db.Uuid
   created_at         DateTime                @default(now()) @db.Timestamp(6)
@@ -22,7 +21,6 @@ model appointment {
   deleted_at         DateTime?               @db.Timestamp(6)
   doctor             doctor                  @relation(fields: [doctor_id], references: [id], onUpdate: NoAction, map: "fk_appointment_doctor")
   patient            patient                 @relation(fields: [patient_id], references: [id], onUpdate: NoAction, map: "fk_appointment_patient")
-  service            service                 @relation(fields: [service_id], references: [id], onUpdate: NoAction, map: "fk_appointment_service")
 }
 
 model doctor {
@@ -69,19 +67,6 @@ model patient {
   user            user?         @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: NoAction, map: "fk_patient_user")
 }
 
-model service {
-  id                String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name              String         @db.VarChar(50)
-  description       String         @db.VarChar(200)
-  price             Int
-  specialization_id String         @db.Uuid
-  created_at        DateTime       @default(now()) @db.Timestamp(6)
-  updated_at        DateTime?      @db.Timestamp(6)
-  deleted_at        DateTime?      @db.Timestamp(6)
-  appointment       appointment[]
-  specialization    specialization @relation(fields: [specialization_id], references: [id], onUpdate: NoAction, map: "fk_service_specialization")
-}
-
 model specialization {
   id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name       String    @db.VarChar(50)
@@ -89,7 +74,6 @@ model specialization {
   updated_at DateTime? @db.Timestamp(6)
   deleted_at DateTime? @db.Timestamp(6)
   doctor     doctor[]
-  service    service[]
 }
 
 model user {

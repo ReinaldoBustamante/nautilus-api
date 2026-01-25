@@ -5,7 +5,6 @@ import { UsersModule } from './users/users.module';
 import { DoctorsModule } from './doctors/doctors.module';
 import { PatientsModule } from './patients/patients.module';
 import { SpecializationsModule } from './specializations/specializations.module';
-import { ServicesModule } from './services/services.module';
 
 
 @Module({
@@ -19,7 +18,6 @@ import { ServicesModule } from './services/services.module';
     DoctorsModule,
     PatientsModule,
     SpecializationsModule,
-    ServicesModule,
   ],
   controllers: [],
   providers: [],

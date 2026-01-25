@@ -17,12 +17,7 @@ export class SpecializationsController {
     getSpecialization() {
         return this.specializationsService.findAll()
     }
-
-    @Get(':id/services')
-    getSpecializationServices(@Param('id') id: string) {
-        return this.specializationsService.findAllServicesBySpecialization(id)
-    }
-
+    
     @Post('')
     createSpecialization(@Body() payload: CreateSpecializationDto) {
         return this.specializationsService.create(payload)

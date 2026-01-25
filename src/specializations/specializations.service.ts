@@ -11,21 +11,6 @@ export class SpecializationsService {
         return await this.prisma.specialization.findMany({ where: { deleted_at: null } })
     }
 
-    async findAllServicesBySpecialization(id: string) {
-
-        const specialization = await this.prisma.specialization.findFirst({
-            where: { id, deleted_at: null },
-            include: { service: true }
-        })
-        if (!specialization) throw new NotFoundException('specialization not found')
-        return {
-            id: specialization.id,
-            name: specialization.name,
-            services: specialization.service
-        }
-
-    }
-
     async create(payload: CreateSpecializationDto) {
         try {
             return await this.prisma.specialization.create({
