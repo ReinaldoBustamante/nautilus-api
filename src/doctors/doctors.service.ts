@@ -14,8 +14,31 @@ export class DoctorsService {
     }
 
     async findAvalaibleScheduleByDoctor(id: string) {
-       return 'method not exist'
+        const appointments = await this.prisma.appointment.findMany({
+            where: { doctor_id: id },
+            select: { appointment_date: true }
+        })
+
+        const occupied = new Set(
+            appointments.map(appointment => {
+                const date = new Date(appointment.appointment_date)
+                return `${date.getUTCDay()}-${date.toISOString().slice(11, 19)}`
+            })
+        )
+
+        const schedules = await this.prisma.doctor_schedule.findMany({
+            where: { doctor_id: id }
+        })
+
+        return schedules.filter(schedule => {
+            const key = `${schedule.day_of_week}-${schedule.start_time
+                .toISOString()
+                .slice(11, 19)}`
+            return !occupied.has(key)
+        })
     }
+
+
 
     async create(payload: CreateDoctorDto) {
         try {
