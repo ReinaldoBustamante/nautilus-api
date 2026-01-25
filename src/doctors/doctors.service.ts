@@ -13,29 +13,47 @@ export class DoctorsService {
         });
     }
 
-    async findAvalaibleScheduleByDoctor(id: string) {
+    async findAvalaibleScheduleByDoctor(id: string, isoDate: string) {
+
+        const selectedDate = new Date(isoDate);
+
+        const dayOfWeek = selectedDate.getUTCDay();
+        const startOfDay = new Date(isoDate);
+        startOfDay.setUTCHours(0, 0, 0, 0);
+
+        const endOfDay = new Date(isoDate);
+        endOfDay.setUTCHours(23, 59, 59, 999);
+
         const appointments = await this.prisma.appointment.findMany({
-            where: { doctor_id: id },
+            where: {
+                doctor_id: id,
+                appointment_date: {
+                    gte: startOfDay,
+                    lte: endOfDay
+                }
+            },
             select: { appointment_date: true }
-        })
+        });
 
-        const occupied = new Set(
-            appointments.map(appointment => {
-                const date = new Date(appointment.appointment_date)
-                return `${date.getUTCDay()}-${date.toISOString().slice(11, 19)}`
-            })
-        )
+        const occupiedTimes = new Set(
+            appointments.map(appointment => appointment.appointment_date.toISOString().slice(11, 16))
+        );
 
-        const schedules = await this.prisma.doctor_schedule.findMany({
-            where: { doctor_id: id }
-        })
+        const baseSchedules = await this.prisma.doctor_schedule.findMany({
+            where: {
+                doctor_id: id,
+                day_of_week: dayOfWeek
+            }
+        });
 
-        return schedules.filter(schedule => {
-            const key = `${schedule.day_of_week}-${schedule.start_time
-                .toISOString()
-                .slice(11, 19)}`
-            return !occupied.has(key)
-        })
+        return baseSchedules.filter(schedule => {
+           
+            const timeKey = schedule.start_time.toISOString().slice(11, 16);
+            return !occupiedTimes.has(timeKey);
+        });
+
+
+
     }
 
 

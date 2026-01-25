@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { DoctorsService } from './doctors.service';
 import { CreateDoctorDto } from './dtos/CreateDoctorDto';
 import { AuthGuard } from 'src/common/guards/auth/auth.guard';
@@ -17,8 +17,8 @@ export class DoctorsController {
     }
     
     @Get(':id/schedule')
-    getDoctorSchedule(@Param('id') id: string) {
-        return this.doctorService.findAvalaibleScheduleByDoctor(id)
+    getDoctorSchedule(@Param('id') id: string, @Query('date') isoDate: string) {
+        return this.doctorService.findAvalaibleScheduleByDoctor(id, isoDate)
     }
 
     @UseGuards(AuthGuard, RolesGuard)
