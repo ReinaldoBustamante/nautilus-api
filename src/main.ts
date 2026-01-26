@@ -11,7 +11,8 @@ async function bootstrap() {
     origin: [
       //frontend url
       'http://localhost:5173',
-      'http://192.168.1.9:5173' 
+      'http://192.168.1.9:5173',
+      'http://192.168.1.9:4173'
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,

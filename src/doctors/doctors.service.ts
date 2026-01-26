@@ -52,8 +52,6 @@ export class DoctorsService {
             return !occupiedTimes.has(timeKey);
         });
 
-
-
     }
 
 
