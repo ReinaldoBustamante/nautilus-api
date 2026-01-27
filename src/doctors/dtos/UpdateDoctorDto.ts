@@ -1,5 +1,4 @@
 import { IsOptional, IsPhoneNumber, IsString, IsUUID } from "class-validator"
-import { IsRut } from "src/common/decorators/rut.decorator"
 
 export class UpdateDoctorDto {
     @IsOptional()

@@ -12,7 +12,7 @@ model appointment {
   id                 String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   appointment_date   DateTime                @db.Timestamp(6)
   address_snapshot   String                  @db.VarChar(100)
-  comment            String
+  comment            String?
   appointment_status appointment_status_type @default(pending)
   doctor_id          String                  @db.Uuid
   patient_id         String                  @db.Uuid
