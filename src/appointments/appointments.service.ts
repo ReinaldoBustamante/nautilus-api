@@ -53,7 +53,7 @@ export class AppointmentsService {
             const appointment = await tx.appointment.create({
                 data: {
                     patient_id: patient.id,
-                    doctor_id: "c4e7c5de-5249-4781-9e31-82f5b9294fe2",
+                    doctor_id: payload.doctor_id,
                     address_snapshot: payload.address,
                     appointment_date: payload.date,
                     comment: payload.comment
