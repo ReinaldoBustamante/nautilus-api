@@ -5,6 +5,7 @@ import { AuthGuard } from 'src/common/guards/auth/auth.guard';
 import { RolesGuard } from 'src/common/guards/roles/roles.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { user_role_type } from 'generated/prisma/enums';
+import { RegisterAppointmentDto } from './dtos/RegisterAppointmentDto';
 
 @Controller('appointments')
 export class AppointmentsController {
@@ -19,7 +20,14 @@ export class AppointmentsController {
     }
 
     @Post('')
+    @UseGuards(AuthGuard, RolesGuard)
+    @Roles(user_role_type.admin)
     createAppointment(@Body() payload: CreateAppointmentDto){
         return this.appointmentsService.create(payload)
+    }
+
+    @Post('/register')
+    registerAppointment(@Body() payload: RegisterAppointmentDto){
+        return this.appointmentsService.register(payload)
     }
 }
