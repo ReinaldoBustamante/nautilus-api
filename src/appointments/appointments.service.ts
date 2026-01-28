@@ -3,7 +3,6 @@ import { PrismaService } from 'src/prisma.service';
 import { CreateAppointmentDto } from './dtos/CreateAppointmentDto';
 import { RegisterAppointmentDto } from './dtos/RegisterAppointmentDto';
 import { BcryptAdapter } from 'src/auth/adapters/bcrypt.adapter';
-import { randomBytes } from 'crypto';
 
 @Injectable()
 export class AppointmentsService {

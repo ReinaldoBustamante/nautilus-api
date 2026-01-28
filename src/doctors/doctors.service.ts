@@ -27,6 +27,7 @@ export class DoctorsService {
         const appointments = await this.prisma.appointment.findMany({
             where: {
                 doctor_id: id,
+                deleted_at: null,
                 appointment_date: {
                     gte: startOfDay,
                     lte: endOfDay
