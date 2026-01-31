@@ -18,6 +18,7 @@ export class AuthGuard implements CanActivate {
       where: { id: decodedToken.sub },
       select: { id: true, deleted_at: true, user_status: true }
     })
+    
     if (!user) throw new UnauthorizedException('invalid credentials')
     if (user.deleted_at !== null) throw new UnauthorizedException('invalid credentials')
     if( user.user_status !== 'active') throw new UnauthorizedException('invalid credentials')

@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { BcryptAdapter } from './adapters/bcrypt.adapter';
 import { PrismaService } from 'src/prisma.service';
 
+
 @Module({
   controllers: [AuthController],
   providers: [AuthService, BcryptAdapter, PrismaService]
