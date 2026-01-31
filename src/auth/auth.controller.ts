@@ -21,9 +21,9 @@ export class AuthController {
         return this.authService.login(payload)
     }
 
-    @Get('/check-status')
+    @Get('/me')
     @UseGuards(AuthGuard)
     async tokenIsValid(@Request() req: Request){
-        return this.authService.verify(req)
+        return this.authService.me(req)
     }
 }

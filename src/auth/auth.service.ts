@@ -56,7 +56,7 @@ export class AuthService {
         }
     }
 
-    async verify(req: Request) {
+    async me(req: Request) {
         try {
             const authHeader = req.headers['authorization'];
             if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -70,12 +70,15 @@ export class AuthService {
                 throw new Error('Invalid token payload');
             }
 
+            const user = await this.prisma.user.findUnique({
+                where: { id: decodedToken.sub },
+                select: { id: true, email: true, user_role: true, user_status: true, deleted_at: true}
+            })
+
+            if(!user) throw new Error('user not found');
+
             return {
-                sub: decodedToken.sub,
-                token: JWTAdapter.generateToken({
-                    role: decodedToken.role,
-                    sub: decodedToken.sub
-                })
+                user
             };
         } catch (error) {
             console.error("JWT Verification Error:", error.message);
