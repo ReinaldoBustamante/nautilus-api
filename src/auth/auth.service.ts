@@ -49,8 +49,8 @@ export class AuthService {
         if (!isValidPassword) throw new UnauthorizedException('Invalid credentials');
         return {
             sub: user.id,
+            role: user.user_role,
             token: JWTAdapter.generateToken({
-                role: user.user_role,
                 sub: user.id
             })
         }
