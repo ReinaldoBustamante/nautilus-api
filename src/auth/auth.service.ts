@@ -51,7 +51,8 @@ export class AuthService {
             sub: user.id,
             role: user.user_role,
             token: JWTAdapter.generateToken({
-                sub: user.id
+                sub: user.id,
+                role: user.user_role
             })
         }
     }
