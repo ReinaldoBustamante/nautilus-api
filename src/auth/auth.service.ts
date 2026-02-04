@@ -66,17 +66,35 @@ export class AuthService {
 
             const token = authHeader.split(" ")[1];
             const decodedToken = await JWTAdapter.verifyToken(token) as JwtPayload;
-
+       
             if (!decodedToken) {
                 throw new Error('Invalid token payload');
             }
+            const { sub: id, role } = decodedToken
+            let user: any = null;
 
-            const user = await this.prisma.user.findUnique({
-                where: { id: decodedToken.sub },
-                select: { id: true, email: true, user_role: true, user_status: true, deleted_at: true}
-            })
+            switch (role) {
+                case 'admin':
+                    user = await this.prisma.user.findUnique({ where: { id }, select: {email: true, user_role: true, user_status: true} });
+                    break;
+                case 'patient':
+                    user = await this.prisma.patient.findFirst({
+                        where: { user_id: id, deleted_at: null },
+                        include: { user: { select: { email: true } } }
+                    });
+                    break;
+                case 'doctor':
+                    user = await this.prisma.doctor.findFirst({
+                        where: { user_id: id, deleted_at: null },
+                        include: { user: { select: { email: true } } }
+                    });
+                    break;
+                default:
+                    throw new Error('Invalid role');
+            }
 
-            if(!user) throw new Error('user not found');
+
+            if (!user) throw new Error('user not found');
 
             return {
                 user
