@@ -9,8 +9,12 @@ export class AppointmentsService {
 
     constructor(private readonly prisma: PrismaService, private readonly bcryptAdapter: BcryptAdapter) { }
 
-    async findAll() {
-        return await this.prisma.appointment.findMany()
+    async findAll(doctorID: string) {
+        return await this.prisma.appointment.findMany({
+            where: {
+                doctor_id: doctorID
+            }
+        })
     }
 
     async create(payload: CreateAppointmentDto) {
