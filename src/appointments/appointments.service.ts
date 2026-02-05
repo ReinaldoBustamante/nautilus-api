@@ -1,6 +1,5 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { CreateAppointmentDto } from './dtos/CreateAppointmentDto';
 import { RegisterAppointmentDto } from './dtos/RegisterAppointmentDto';
 import { BcryptAdapter } from 'src/auth/adapters/bcrypt.adapter';
 
@@ -17,17 +16,6 @@ export class AppointmentsService {
         })
     }
 
-    async create(payload: CreateAppointmentDto) {
-        try {
-            return await this.prisma.appointment.create({
-                data: payload
-            })
-        } catch (err) {
-            if (err.code === 'P2002') throw new ConflictException('resource already exists')
-            throw err
-        }
-    }
-
     async register(payload: RegisterAppointmentDto) {
         const result = await this.prisma.$transaction(async (tx) => {
 
@@ -36,19 +24,14 @@ export class AppointmentsService {
             })
 
             if (!patient) {
-                const user =
-                    await tx.user.findFirst({ where: { email: payload.email, deleted_at: null } }) ??
-                    await tx.user.create({
-                        data: { email: payload.email, password: null, user_status: 'inactive' }
-                    })
 
                 patient = await tx.patient.create({
                     data: {
                         name: payload.name,
                         rut: payload.rut,
-                        phone_number: payload.phone_number,
+                        default_phone_number: payload.phone_number,
                         default_address: payload.address,
-                        user_id: user.id
+                        user_id: null
                     }
                 })
             }
@@ -58,6 +41,8 @@ export class AppointmentsService {
                     patient_id: patient.id,
                     doctor_id: payload.doctor_id,
                     address_snapshot: payload.address,
+                    email_snapshot: payload.email,
+                    phone_number_snapshot: payload.phone_number,
                     appointment_date: payload.date,
                     comment: payload.comment
                 }

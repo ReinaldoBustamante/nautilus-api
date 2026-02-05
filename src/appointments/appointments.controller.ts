@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { AppointmentsService } from './appointments.service';
-import { CreateAppointmentDto} from './dtos/CreateAppointmentDto';
 import { AuthGuard } from 'src/common/guards/auth/auth.guard';
 import { RolesGuard } from 'src/common/guards/roles/roles.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
@@ -17,13 +16,6 @@ export class AppointmentsController {
     @Roles(user_role_type.admin, user_role_type.doctor)
     findAppointments(@Query('doctorID') doctor_id: string){
         return this.appointmentsService.findAll(doctor_id)
-    }
-
-    @Post('')
-    @UseGuards(AuthGuard, RolesGuard)
-    @Roles(user_role_type.admin)
-    createAppointment(@Body() payload: CreateAppointmentDto){
-        return this.appointmentsService.create(payload)
     }
 
     @Post('/register')

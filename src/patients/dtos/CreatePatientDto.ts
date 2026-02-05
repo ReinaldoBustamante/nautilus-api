@@ -8,7 +8,7 @@ export class CreatePatientDto {
 
     @IsPhoneNumber('CL')
     @IsNotEmpty()
-    phone_number: string
+    default_phone_number: string
 
     @IsRut()
     @IsNotEmpty()
