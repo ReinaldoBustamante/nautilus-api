@@ -10,9 +10,8 @@ export class AppointmentsService {
 
     async findAll(doctorID: string) {
         return await this.prisma.appointment.findMany({
-            where: {
-                doctor_id: doctorID
-            }
+            where: { doctor_id: doctorID },
+            include: { patient: {select: {name: true, rut: true}} },
         })
     }
 
