@@ -95,6 +95,7 @@ enum appointment_status_type {
   pending
   confirmed
   cancelled
+  completed
 }
 
 enum user_role_type {
