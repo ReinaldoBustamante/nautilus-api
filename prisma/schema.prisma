@@ -43,14 +43,15 @@ model doctor {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model doctor_schedule {
-  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  day_of_week Int
-  start_time  DateTime  @db.Time(6)
-  end_time    DateTime  @db.Time(6)
-  doctor_id   String    @db.Uuid
-  created_at  DateTime  @default(now()) @db.Timestamp(6)
-  updated_at  DateTime? @db.Timestamp(6)
-  doctor      doctor    @relation(fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_doctor_schedule_doctor")
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  day_of_week  Int
+  start_time   String    @db.VarChar(50)
+  end_time     String    @db.VarChar(50)
+  doctor_id    String    @db.Uuid
+  created_at   DateTime  @default(now()) @db.Timestamp(6)
+  updated_at   DateTime? @db.Timestamp(6)
+  is_activated Boolean?  @default(true)
+  doctor       doctor    @relation(fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_doctor_schedule_doctor")
 
   @@unique([day_of_week, doctor_id, start_time])
 }

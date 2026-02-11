@@ -49,7 +49,7 @@ export class DoctorsService {
 
         return baseSchedules.filter(schedule => {
            
-            const timeKey = schedule.start_time.toISOString().slice(11, 16);
+            const timeKey = schedule.start_time.slice(11, 16);
             return !occupiedTimes.has(timeKey);
         });
 
