@@ -35,11 +35,11 @@ export class DoctorsService {
             },
             select: { appointment_date: true }
         });
-
+        
         const occupiedTimes = new Set(
             appointments.map(appointment => appointment.appointment_date.toISOString().slice(11, 16))
         );
-
+      
         const baseSchedules = await this.prisma.doctor_schedule.findMany({
             where: {
                 doctor_id: id,
@@ -49,7 +49,7 @@ export class DoctorsService {
 
         return baseSchedules.filter(schedule => {
            
-            const timeKey = schedule.start_time.toISOString().slice(11, 16);
+            const timeKey = schedule.start_time;
             return !occupiedTimes.has(timeKey);
         });
 

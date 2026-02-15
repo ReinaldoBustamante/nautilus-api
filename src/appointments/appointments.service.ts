@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { RegisterAppointmentDto } from './dtos/RegisterAppointmentDto';
 import { BcryptAdapter } from 'src/auth/adapters/bcrypt.adapter';
+import { UpdateAppointmentStatusDto } from './dtos/updateAppointmentStatus';
 
 @Injectable()
 export class AppointmentsService {
@@ -11,7 +12,7 @@ export class AppointmentsService {
     async findAll(doctorID: string) {
         return await this.prisma.appointment.findMany({
             where: { doctor_id: doctorID },
-            include: { patient: {select: {name: true, rut: true}} },
+            include: { patient: { select: { name: true, rut: true } } },
         })
     }
 
@@ -51,5 +52,17 @@ export class AppointmentsService {
         })
 
         return result
+    }
+
+    async updateStatus(id: string, payload: UpdateAppointmentStatusDto) {
+        try {
+            return await this.prisma.appointment.update({
+                where: { id },
+                data: payload
+            })
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
     }
 }
