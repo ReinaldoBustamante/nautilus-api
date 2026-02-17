@@ -10,4 +10,8 @@ export class PrismaService extends PrismaClient {
     const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
     super({ adapter });
   }
+
+  async onModuleInit() {
+    await this.$connect();
+  }
 }

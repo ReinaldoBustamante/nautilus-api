@@ -50,11 +50,12 @@ export class AuthService {
     async logout(userId: string) {
         try {
             await this.redis.del(`refresh_token:${userId}`);
+            return { message: 'User logout success' };
         } catch (error) {
             console.error('Redis logout error:', error);
             throw error
         }
-        return { message: 'User logout success' };
+
     }
 
     async refresh(req: Request, res: Response) {
