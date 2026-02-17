@@ -24,10 +24,11 @@ export class AuthService {
                 deleted_at: null
             },
         })
+
         if (!user?.email) throw new UnauthorizedException('Invalid credentials');
         if (user?.user_status !== user_status_type.active) throw new UnauthorizedException('Invalid credentials');
         if (!user.password) throw new UnauthorizedException('Invalid credentials')
-        const isValidPassword = await this.bcryptAdapter.comparePassword(user.password, payload.password)
+        const isValidPassword = await this.bcryptAdapter.comparePassword(payload.password, user.password)
         if (!isValidPassword) throw new UnauthorizedException('Invalid credentials');
 
         const accessToken = JWTAdapter.generateToken({ sub: user.id, role: user.user_role }, '10m');
