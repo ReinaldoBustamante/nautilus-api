@@ -10,7 +10,8 @@ export class PatientsService {
 
     async findAll() {
         return await this.prisma.patient.findMany({
-            where: { deleted_at: null }
+            where: { deleted_at: null },
+            include: { appointment: true }
         })
     }
 

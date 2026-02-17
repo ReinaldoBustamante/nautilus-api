@@ -7,6 +7,7 @@ import { PatientsModule } from './patients/patients.module';
 import { SpecializationsModule } from './specializations/specializations.module';
 import { AppointmentsModule } from './appointments/appointments.module';
 import { SchedulesModule } from './schedules/schedules.module';
+import { RedisModule } from './redis/redis.module';
 
 
 @Module({
@@ -22,6 +23,8 @@ import { SchedulesModule } from './schedules/schedules.module';
     SpecializationsModule,
     AppointmentsModule,
     SchedulesModule,
+    RedisModule,
+    
   ],
   controllers: [],
   providers: [],

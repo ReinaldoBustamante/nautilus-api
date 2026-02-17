@@ -1,29 +1,37 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
-import { CreateUserDto } from './dtos/CreateUser.dto';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from './dtos/LoginUser.dto';
 import { AuthGuard } from 'src/common/guards/auth/auth.guard';
+import type { Request, Response } from 'express';
 
 
 
 @Controller('auth')
 export class AuthController {
-    constructor(private authService: AuthService){}
+    constructor(private authService: AuthService) { }
 
-    @Post('/register')
-    async createUser(@Body() payload: CreateUserDto){
-        return this.authService.create(payload)
-    }
 
     @Post('/login')
     @HttpCode(HttpStatus.OK)
-    async loginUser(@Body() payload: LoginUserDto){
-        return this.authService.login(payload)
+    async loginUser(@Body() payload: LoginUserDto, @Res({ passthrough: true }) res: Response) {
+
+        return this.authService.login(payload, res)
     }
 
-    @Get('/me')
+    @Post('/refresh')
+    async refreshToken(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+        return this.authService.refresh(req, res)
+    }
+
+    @Post('/logout')
     @UseGuards(AuthGuard)
-    async tokenIsValid(@Request() req: Request){
-        return this.authService.me(req)
+    async logoutUser(@Req() req: Request) {
+        return this.authService.logout(req['user'].sub)
+    }
+
+    @Get('/profile')
+    @UseGuards(AuthGuard)
+    async tokenIsValid(@Req() req: Request) {
+        return this.authService.profile(req)
     }
 }
