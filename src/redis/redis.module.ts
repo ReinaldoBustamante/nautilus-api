@@ -9,7 +9,7 @@ import Redis from 'ioredis';
       useFactory: () => {
         return new Redis({
           host: process.env.REDIS_HOST,
-          port: 18852,
+          port: Number(process.env.REDIS_PORT),
           password: process.env.REDIS_PASSWORD,
         });
       },
@@ -17,4 +17,4 @@ import Redis from 'ioredis';
   ],
   exports: ['REDIS_CLIENT'],
 })
-export class RedisModule {}
+export class RedisModule { }
