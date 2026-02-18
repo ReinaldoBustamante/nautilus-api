@@ -41,7 +41,7 @@ export class AuthService {
             sameSite: 'strict',
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
-        
+
         return {
             sub: user.id,
             role: user.user_role,
@@ -93,48 +93,24 @@ export class AuthService {
         };
     }
 
-    async profile(req: Request) {
+    async profile(userId: string) {
         try {
-            const authHeader = req.headers['authorization'];
-            if (!authHeader || !authHeader.startsWith('Bearer ')) {
-                throw new Error('No token provided or invalid format');
+            const user = await this.prisma.user.findUnique({
+                where: { id: userId },
+                include: {
+                    doctor: {
+                        select: {
+                            id: true,
+                            name: true
+                        }
+                    }
+                }
+            })
+            if (!user) {
+                throw new Error("Usuario no encontrado");
             }
-
-            const token = authHeader.split(" ")[1];
-            const decodedToken = await JWTAdapter.verifyToken(token) as JwtPayload;
-
-            if (!decodedToken) {
-                throw new Error('Invalid token payload');
-            }
-            const { sub: id, role } = decodedToken
-            let user: any = null;
-
-            switch (role) {
-                case 'admin':
-                    user = await this.prisma.user.findUnique({ where: { id }, select: { email: true, user_role: true, user_status: true } });
-                    break;
-                case 'patient':
-                    user = await this.prisma.patient.findFirst({
-                        where: { user_id: id, deleted_at: null },
-                        include: { user: { select: { email: true } } }
-                    });
-                    break;
-                case 'doctor':
-                    user = await this.prisma.doctor.findFirst({
-                        where: { user_id: id, deleted_at: null },
-                        include: { user: { select: { email: true } } }
-                    });
-                    break;
-                default:
-                    throw new Error('Invalid role');
-            }
-
-
-            if (!user) throw new Error('user not found');
-
-            return {
-                user
-            };
+            const { password, ...rest } = user
+            return rest
         } catch (error) {
             console.error("JWT Verification Error:", error.message);
             throw new Error('Unauthorized');

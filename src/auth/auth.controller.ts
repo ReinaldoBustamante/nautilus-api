@@ -38,6 +38,6 @@ export class AuthController {
     @Get('/profile')
     @UseGuards(AuthGuard)
     async tokenIsValid(@Req() req: Request) {
-        return this.authService.profile(req)
+        return this.authService.profile(req['user'].sub)
     }
 }
