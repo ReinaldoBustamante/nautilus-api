@@ -12,21 +12,26 @@ export class AuthGuard implements CanActivate {
     if (!request.headers['authorization']) throw new UnauthorizedException('need access token')
     const [method, token] = request.headers['authorization'].split(" ")
     if (method !== "Bearer") throw new BadRequestException('Expect Bearer method')
-    const decodedToken = await JWTAdapter.verifyToken(token) as JwtPayload
 
-    const user = await this.prisma.user.findUnique({
-      where: { id: decodedToken.sub },
-      select: { id: true, deleted_at: true, user_status: true }
-    })
-    
-    if (!user) throw new UnauthorizedException('invalid credentials')
-    if (user.deleted_at !== null) throw new UnauthorizedException('invalid credentials')
-    if( user.user_status !== 'active') throw new UnauthorizedException('invalid credentials')
-    request["user"] = {
-      sub: decodedToken.sub,
-      role: decodedToken.role,
-    };
-
+    try {
+      const decodedToken = await JWTAdapter.verifyToken(token) as JwtPayload
+      const user = await this.prisma.user.findUnique({
+        where: { id: decodedToken.sub },
+        select: { id: true, deleted_at: true, user_status: true }
+      })
+      if (!user) throw new UnauthorizedException('invalid credentials')
+      if (user.deleted_at !== null) throw new UnauthorizedException('invalid credentials')
+      if (user.user_status !== 'active') throw new UnauthorizedException('invalid credentials')
+      request["user"] = {
+        sub: decodedToken.sub,
+        role: decodedToken.role,
+      };
+    } catch (error) {
+      if (error.name === 'TokenExpiredError') {
+        throw new UnauthorizedException('Token has expired'); 
+      }
+      throw error
+    }
 
     return true;
   }

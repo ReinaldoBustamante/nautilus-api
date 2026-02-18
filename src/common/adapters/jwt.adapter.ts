@@ -7,7 +7,7 @@ export class JWTAdapter {
         return sign(payload, secret, { expiresIn: expireIn as SignOptions['expiresIn'] })
     }
 
-    static verifyToken(token: string) {
+    static verifyToken(token: string, ignoreExpiration: boolean = false) {
         return new Promise((resolve, rejects) => {
             if (!process.env.JWT_SECRET) throw new Error('JWT_SEED is not defined')
             verify(token, process.env.JWT_SECRET, (err, decoded) => {

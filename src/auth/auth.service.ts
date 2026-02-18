@@ -65,7 +65,7 @@ export class AuthService {
         if (!oldRefreshToken) {
             throw new UnauthorizedException('No refresh token provided');
         }
-        const payload = await JWTAdapter.verifyToken(oldRefreshToken) as JwtPayload;
+        const payload = await JWTAdapter.verifyToken(oldRefreshToken, true) as JwtPayload;
         if (!payload || !payload.sub) {
             throw new UnauthorizedException('Invalid or expired refresh token');
         }
