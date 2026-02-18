@@ -90,6 +90,8 @@ model user {
   deleted_at  DateTime?        @db.Timestamp(6)
   doctor      doctor[]
   patient     patient[]
+
+  @@index([email, deleted_at])
 }
 
 enum appointment_status_type {

@@ -18,13 +18,15 @@ export class AuthService {
     ) { }
 
     async login(payload: LoginUserDto, res: Response) {
+        const start = performance.now();
         const user = await this.prisma.user.findFirst({
             where: {
                 email: payload.email,
                 deleted_at: null
             },
         })
-
+        
+        console.log(`Consulta DB: ${performance.now() - start}ms`);
         if (!user?.email) throw new UnauthorizedException('Invalid credentials');
         if (user?.user_status !== user_status_type.active) throw new UnauthorizedException('Invalid credentials');
         if (!user.password) throw new UnauthorizedException('Invalid credentials')
@@ -40,7 +42,7 @@ export class AuthService {
             sameSite: 'strict',
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
-
+        
         return {
             sub: user.id,
             role: user.user_role,
