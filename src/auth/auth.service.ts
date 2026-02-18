@@ -25,7 +25,6 @@ export class AuthService {
                 deleted_at: null
             },
         })
-        
         console.log(`Consulta DB: ${performance.now() - start}ms`);
         if (!user?.email) throw new UnauthorizedException('Invalid credentials');
         if (user?.user_status !== user_status_type.active) throw new UnauthorizedException('Invalid credentials');
