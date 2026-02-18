@@ -26,7 +26,12 @@ export class AuthController {
     @Post('/logout')
     @UseGuards(AuthGuard)
     async logoutUser(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-        res.clearCookie('refresh_token')
+        res.clearCookie('refresh_token', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict', 
+            path: '/',          
+        });
         return this.authService.logout(req['user'].sub)
     }
 
