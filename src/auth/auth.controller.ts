@@ -29,7 +29,7 @@ export class AuthController {
         res.clearCookie('refresh_token', {
             httpOnly: true,
             secure: true,
-            sameSite: 'strict', 
+            sameSite: 'none', 
             path: '/',          
         });
         return this.authService.logout(req['user'].sub)

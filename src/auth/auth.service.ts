@@ -89,7 +89,7 @@ export class AuthService {
             res.cookie('refresh_token', newRefreshToken, {
                 httpOnly: true,
                 secure: true, // Asegúrate de que tu front use HTTPS o esto fallará en prod
-                sameSite: 'strict',
+                sameSite: 'none',
                 maxAge: 7 * 24 * 60 * 60 * 1000,
             });
 
