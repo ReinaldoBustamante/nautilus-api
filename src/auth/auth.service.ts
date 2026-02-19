@@ -90,6 +90,7 @@ export class AuthService {
                 httpOnly: true,
                 secure: true, // Asegúrate de que tu front use HTTPS o esto fallará en prod
                 sameSite: 'none',
+                path: '/',
                 maxAge: 7 * 24 * 60 * 60 * 1000,
             });
 
