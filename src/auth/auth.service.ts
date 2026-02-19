@@ -35,6 +35,7 @@ export class AuthService {
         const accessToken = JWTAdapter.generateToken({ sub: user.id, role: user.user_role }, '10m');
         const refreshToken = JWTAdapter.generateToken({ sub: user.id, role: user.user_role }, '7d');
         await this.redis.set(`refresh_token:${user.id}`, refreshToken, 'EX', 7 * 24 * 60 * 60);
+
         res.cookie('refresh_token', refreshToken, {
             httpOnly: true,
             secure: true,
@@ -62,37 +63,47 @@ export class AuthService {
 
     async refresh(req: Request, res: Response) {
         const oldRefreshToken = req.cookies['refresh_token'];
-        if (!oldRefreshToken) {
-            throw new UnauthorizedException('No refresh token provided');
-        }
+        if (!oldRefreshToken) throw new UnauthorizedException('No refresh token provided');
+
         const payload = await JWTAdapter.verifyToken(oldRefreshToken, true) as JwtPayload;
-        if (!payload || !payload.sub) {
-            throw new UnauthorizedException('Invalid or expired refresh token');
-        }
+        if (!payload?.sub) throw new UnauthorizedException('Invalid or expired refresh token');
 
         const redisKey = `refresh_token:${payload.sub}`;
-        const storedToken = await this.redis.get(redisKey);
-        if (oldRefreshToken !== storedToken) {
-            await this.redis.del(redisKey);
-            throw new ForbiddenException('Token mismatch - possible reuse detected');
+
+        try {
+            const storedToken = await this.redis.get(redisKey);
+
+            if (oldRefreshToken !== storedToken) {
+                // Si hay un mismatch, borramos por seguridad (si Redis está vivo)
+                await this.redis.del(redisKey).catch(() => { });
+                throw new ForbiddenException('Token mismatch - possible reuse detected');
+            }
+
+            const userData = { sub: payload.sub, role: payload.role };
+            const accessToken = JWTAdapter.generateToken(userData, '10m');
+            const newRefreshToken = JWTAdapter.generateToken(userData, '7d');
+
+            // Actualizamos Redis y la Cookie
+            await this.redis.set(redisKey, newRefreshToken, 'EX', 7 * 24 * 60 * 60);
+
+            res.cookie('refresh_token', newRefreshToken, {
+                httpOnly: true,
+                secure: true, // Asegúrate de que tu front use HTTPS o esto fallará en prod
+                sameSite: 'strict',
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+            });
+
+            return { token: accessToken };
+
+        } catch (error) {
+            if (error instanceof ForbiddenException) throw error;
+
+            // Si Redis falla (ECONNRESET), decidimos si dejar pasar o bloquear.
+            // Lo más seguro es loguear y lanzar error de servicio no disponible.
+            console.error('Error de sesión (Redis):', error.message);
+            throw new UnauthorizedException('Session could not be verified');
         }
-
-        const userData = { sub: payload.sub, role: payload.role };
-        const accessToken = JWTAdapter.generateToken(userData, '10m');
-        const newRefreshToken = JWTAdapter.generateToken(userData, '7d');
-
-        await this.redis.set(redisKey, newRefreshToken, 'EX', 7 * 24 * 60 * 60);
-        res.cookie('refresh_token', newRefreshToken, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'strict',
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-        });
-        return {
-            token: accessToken
-        };
     }
-
     async profile(userId: string) {
         try {
             const user = await this.prisma.user.findUnique({
