@@ -1,0 +1,101 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "./generated"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model appointment {
+  id               String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  doctor_id        String                   @db.Uuid
+  patient_id       String                   @db.Uuid
+  service_id       String                   @db.Uuid
+  address_snapshot String                   @db.VarChar(100)
+  phone_snapshot   String                   @db.VarChar(8)
+  appointment_date DateTime                 @db.Timestamp(6)
+  status           status_appointment_type? @default(PENDING)
+  notes            String                   @db.VarChar(200)
+  created_at       DateTime?                @db.Timestamp(6)
+  updated_at       DateTime?                @db.Timestamp(6)
+  doctor           doctor                   @relation(fields: [doctor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_appointment_doctor")
+  patient          patient                  @relation(fields: [patient_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_appointment_patient")
+  service          service                  @relation(fields: [service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_appointment_service")
+}
+
+model doctor {
+  id           String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String        @db.VarChar(100)
+  rut          String        @unique @db.VarChar(9)
+  phone_number String        @db.VarChar(8)
+  user_id      String        @unique @db.Uuid
+  created_at   DateTime?     @db.Timestamp(6)
+  updated_at   DateTime?     @db.Timestamp(6)
+  appointment  appointment[]
+  schedule     schedule[]
+}
+
+model patient {
+  id           String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String        @db.VarChar(100)
+  rut          String        @unique @db.VarChar(9)
+  phone_number String        @db.VarChar(8)
+  address      String        @db.VarChar(100)
+  created_at   DateTime?     @db.Timestamp(6)
+  updated_at   DateTime?     @db.Timestamp(6)
+  appointment  appointment[]
+}
+
+model schedule {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  doctor_id    String    @db.Uuid
+  day_of_week  String    @db.VarChar(10)
+  start_time   DateTime  @db.Time(6)
+  end_time     DateTime  @db.Time(6)
+  is_avalaible Boolean?  @default(true)
+  created_at   DateTime? @db.Timestamp(6)
+  updated_at   DateTime? @db.Timestamp(6)
+  doctor       doctor    @relation(fields: [doctor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_schedule_doctor")
+}
+
+model service {
+  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String        @db.VarChar(100)
+  description String        @db.VarChar(200)
+  price       Int
+  is_active   Boolean?      @default(true)
+  created_at  DateTime?     @db.Timestamp(6)
+  updated_at  DateTime?     @db.Timestamp(6)
+  appointment appointment[]
+}
+
+model user {
+  id         String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email      String      @unique @db.VarChar(100)
+  password   String      @db.VarChar(200)
+  role       role_type   @default(PATIENT)
+  status     status_type @default(INACTIVE)
+  created_at DateTime?   @db.Timestamp(6)
+  updated_at DateTime?   @db.Timestamp(6)
+}
+
+enum role_type {
+  ADMIN
+  DOCTOR
+  PATIENT
+}
+
+enum status_appointment_type {
+  PENDING
+  ACCEPTED
+  COMPLETED
+  CANCELLED
+}
+
+enum status_type {
+  SUSPENDED
+  ACTIVE
+  INACTIVE
+}
