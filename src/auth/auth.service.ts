@@ -51,7 +51,8 @@ export class AuthService {
     try {
       await this.redis.set(`refresh_token:${user.id}`, refresh_token, { EX: 7 * 24 * 60 * 60 });
     } catch (err) {
-      console.error('Error de Redis:', err);
+      console.error('Error de Redis:', err)
+      throw err
     }
 
     return {
@@ -60,7 +61,7 @@ export class AuthService {
     }
   }
 
-  async logout(req: Request, res: Response) {
+  async logout(req: Request, res: Response): Promise<{ message: string }> {
     const user = req['user'] as userPayload
 
     res.clearCookie('refresh_token', {
@@ -74,6 +75,7 @@ export class AuthService {
       await this.redis.del(`refresh_token:${user.id}`)
     } catch (err) {
       console.log('Error de Redis:', err)
+      throw err
     }
 
     return {
@@ -83,7 +85,6 @@ export class AuthService {
 
   async refresh(req: Request, res: Response): Promise<RefreshResponse> {
     const refresh_token = req.cookies['refresh_token']
-    console.log(req.cookies['refresh_token'])
     if (!refresh_token) throw new UnauthorizedException('refresh token not found')
 
     const tokenDecoded = this.jwtAdapter.decodeToken(refresh_token) as userPayload
@@ -98,17 +99,11 @@ export class AuthService {
     }
 
     const redis_refresh_token = await this.redis.get(`refresh_token:${cleanUser.id}`)
-    if (!redis_refresh_token) throw new NotFoundException('refresh token not exists')
+    if (!redis_refresh_token) throw new NotFoundException('refresh token not found')
     if (refresh_token !== redis_refresh_token) throw new UnauthorizedException('Invalid session')
 
     const access_token = this.jwtAdapter.generateToken(cleanUser, '10m')
     const new_refresh_token = this.jwtAdapter.generateToken(cleanUser, '7d')
-
-    try {
-      await this.redis.set(`refresh_token:${cleanUser.id}`, new_refresh_token)
-    } catch (err) {
-      console.log('Error de Redis:', err)
-    }
 
     res.cookie('refresh_token', new_refresh_token, {
       httpOnly: true,
@@ -117,6 +112,13 @@ export class AuthService {
       maxAge: 1000 * 60 * 60 * 24 * 7
     })
 
+    try {
+      await this.redis.set(`refresh_token:${cleanUser.id}`, new_refresh_token)
+    } catch (err) {
+      console.log('Error de Redis:', err)
+      throw err
+    }
+
     return {
       access_token
     }
@@ -124,13 +126,12 @@ export class AuthService {
 
   async profile(req: Request): Promise<ProfileResponse> {
     const user = req['user'] as userPayload
-    console.log(user)
     const profile = await this.prismaService.doctor.findUnique({
       where: {
         user_id: user.id
       }
     })
-    if(!profile) throw new NotFoundException('Profile not exists')
+    if (!profile) throw new NotFoundException('Profile not exists')
     return {
       id: profile.id,
       email: user.email,
