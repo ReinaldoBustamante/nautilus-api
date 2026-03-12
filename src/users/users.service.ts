@@ -35,6 +35,7 @@ export class UsersService {
     } catch (err) {
       const handler = prismaErrorMap[err.code]
       if (handler) throw handler()
+      throw err
     }
   }
 
@@ -47,6 +48,7 @@ export class UsersService {
     } catch (err) {
       const handler = prismaErrorMap[err.code]
       if (handler) throw handler()
+      throw err
     }
   }
 
@@ -62,6 +64,7 @@ export class UsersService {
     } catch (err) {
       const handler = prismaErrorMap[err.code]
       if (handler) throw handler()
+      throw err
     }
   }
 
