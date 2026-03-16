@@ -5,6 +5,8 @@ import { AuthModule } from './auth/auth.module';
 import { RedisModule } from './redis.module';
 import { UsersModule } from './users/users.module';
 import { DoctorsModule } from './doctors/doctors.module';
+import { PatientsModule } from './patients/patients.module';
+import { ServicesModule } from './services/services.module';
 
 
 @Module({
@@ -13,6 +15,8 @@ import { DoctorsModule } from './doctors/doctors.module';
     RedisModule,
     UsersModule,
     DoctorsModule,
+    PatientsModule,
+    ServicesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
