@@ -124,7 +124,7 @@ export const ScheduleScalarFieldEnum = {
   day_of_week: 'day_of_week',
   start_time: 'start_time',
   end_time: 'end_time',
-  is_avalaible: 'is_avalaible',
+  is_available: 'is_available',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const

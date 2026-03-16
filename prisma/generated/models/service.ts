@@ -419,14 +419,6 @@ export type serviceUpdateOneRequiredWithoutAppointmentNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.serviceUpdateToOneWithWhereWithoutAppointmentInput, Prisma.serviceUpdateWithoutAppointmentInput>, Prisma.serviceUncheckedUpdateWithoutAppointmentInput>
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type serviceCreateWithoutAppointmentInput = {
   id?: string
   name: string

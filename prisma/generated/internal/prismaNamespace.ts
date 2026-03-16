@@ -941,7 +941,7 @@ export const ScheduleScalarFieldEnum = {
   day_of_week: 'day_of_week',
   start_time: 'start_time',
   end_time: 'end_time',
-  is_avalaible: 'is_avalaible',
+  is_available: 'is_available',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const
@@ -1048,13 +1048,6 @@ export type ListEnumstatus_appointment_typeFieldRefInput<$PrismaModel> = FieldRe
 
 
 /**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -1065,6 +1058,13 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
