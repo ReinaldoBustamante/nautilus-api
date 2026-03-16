@@ -9,6 +9,8 @@ import { PatientsModule } from './patients/patients.module';
 import { ServicesModule } from './services/services.module';
 import { SchedulesModule } from './schedules/schedules.module';
 import { AppointmentModule } from './appointments/appointment.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 
 @Module({
@@ -21,8 +23,18 @@ import { AppointmentModule } from './appointments/appointment.module';
     ServicesModule,
     SchedulesModule,
     AppointmentModule,
+    ThrottlerModule.forRoot([
+      {
+        name: 'default',
+        ttl: 60000,
+        limit: 20,
+      },
+    ]),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, {
+    provide: APP_GUARD,
+    useClass: ThrottlerGuard,
+  },],
 })
 export class AppModule { }

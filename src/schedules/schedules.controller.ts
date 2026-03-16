@@ -7,6 +7,7 @@ import { RolesGuard } from 'src/common/guards/roles/roles.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { role_type } from 'prisma/generated/enums';
 
+
 @UseGuards(AuthGuard, RolesGuard)
 @Roles(role_type.DOCTOR)
 @Controller('schedules')

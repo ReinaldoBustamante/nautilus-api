@@ -6,12 +6,14 @@ import { AuthGuard } from 'src/common/guards/auth/auth.guard';
 import { RolesGuard } from 'src/common/guards/roles/roles.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { role_type } from 'prisma/generated/enums';
-
+import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 @Controller('appointments')
 export class AppointmentController {
   constructor(private readonly appointmentService: AppointmentService) { }
 
   @Post()
+  @UseGuards(ThrottlerGuard)
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
   create(@Body() createAppointmentDto: CreateAppointmentDto) {
     return this.appointmentService.create(createAppointmentDto);
   }
