@@ -198,6 +198,7 @@ export type userWhereInput = {
   status?: Prisma.Enumstatus_typeFilter<"user"> | $Enums.status_type
   created_at?: Prisma.DateTimeNullableFilter<"user"> | Date | string | null
   updated_at?: Prisma.DateTimeNullableFilter<"user"> | Date | string | null
+  doctor?: Prisma.XOR<Prisma.DoctorNullableScalarRelationFilter, Prisma.doctorWhereInput> | null
 }
 
 export type userOrderByWithRelationInput = {
@@ -208,6 +209,7 @@ export type userOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrderInput | Prisma.SortOrder
   updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  doctor?: Prisma.doctorOrderByWithRelationInput
 }
 
 export type userWhereUniqueInput = Prisma.AtLeast<{
@@ -221,6 +223,7 @@ export type userWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.Enumstatus_typeFilter<"user"> | $Enums.status_type
   created_at?: Prisma.DateTimeNullableFilter<"user"> | Date | string | null
   updated_at?: Prisma.DateTimeNullableFilter<"user"> | Date | string | null
+  doctor?: Prisma.XOR<Prisma.DoctorNullableScalarRelationFilter, Prisma.doctorWhereInput> | null
 }, "id" | "email">
 
 export type userOrderByWithAggregationInput = {
@@ -257,6 +260,7 @@ export type userCreateInput = {
   status?: $Enums.status_type
   created_at?: Date | string | null
   updated_at?: Date | string | null
+  doctor?: Prisma.doctorCreateNestedOneWithoutUserInput
 }
 
 export type userUncheckedCreateInput = {
@@ -267,6 +271,7 @@ export type userUncheckedCreateInput = {
   status?: $Enums.status_type
   created_at?: Date | string | null
   updated_at?: Date | string | null
+  doctor?: Prisma.doctorUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type userUpdateInput = {
@@ -277,6 +282,7 @@ export type userUpdateInput = {
   status?: Prisma.Enumstatus_typeFieldUpdateOperationsInput | $Enums.status_type
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  doctor?: Prisma.doctorUpdateOneWithoutUserNestedInput
 }
 
 export type userUncheckedUpdateInput = {
@@ -287,6 +293,7 @@ export type userUncheckedUpdateInput = {
   status?: Prisma.Enumstatus_typeFieldUpdateOperationsInput | $Enums.status_type
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  doctor?: Prisma.doctorUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type userCreateManyInput = {
@@ -319,6 +326,11 @@ export type userUncheckedUpdateManyInput = {
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
+export type UserScalarRelationFilter = {
+  is?: Prisma.userWhereInput
+  isNot?: Prisma.userWhereInput
+}
+
 export type userCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
@@ -349,12 +361,82 @@ export type userMinOrderByAggregateInput = {
   updated_at?: Prisma.SortOrder
 }
 
+export type userCreateNestedOneWithoutDoctorInput = {
+  create?: Prisma.XOR<Prisma.userCreateWithoutDoctorInput, Prisma.userUncheckedCreateWithoutDoctorInput>
+  connectOrCreate?: Prisma.userCreateOrConnectWithoutDoctorInput
+  connect?: Prisma.userWhereUniqueInput
+}
+
+export type userUpdateOneRequiredWithoutDoctorNestedInput = {
+  create?: Prisma.XOR<Prisma.userCreateWithoutDoctorInput, Prisma.userUncheckedCreateWithoutDoctorInput>
+  connectOrCreate?: Prisma.userCreateOrConnectWithoutDoctorInput
+  upsert?: Prisma.userUpsertWithoutDoctorInput
+  connect?: Prisma.userWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.userUpdateToOneWithWhereWithoutDoctorInput, Prisma.userUpdateWithoutDoctorInput>, Prisma.userUncheckedUpdateWithoutDoctorInput>
+}
+
 export type Enumrole_typeFieldUpdateOperationsInput = {
   set?: $Enums.role_type
 }
 
 export type Enumstatus_typeFieldUpdateOperationsInput = {
   set?: $Enums.status_type
+}
+
+export type userCreateWithoutDoctorInput = {
+  id?: string
+  email: string
+  password: string
+  role?: $Enums.role_type
+  status?: $Enums.status_type
+  created_at?: Date | string | null
+  updated_at?: Date | string | null
+}
+
+export type userUncheckedCreateWithoutDoctorInput = {
+  id?: string
+  email: string
+  password: string
+  role?: $Enums.role_type
+  status?: $Enums.status_type
+  created_at?: Date | string | null
+  updated_at?: Date | string | null
+}
+
+export type userCreateOrConnectWithoutDoctorInput = {
+  where: Prisma.userWhereUniqueInput
+  create: Prisma.XOR<Prisma.userCreateWithoutDoctorInput, Prisma.userUncheckedCreateWithoutDoctorInput>
+}
+
+export type userUpsertWithoutDoctorInput = {
+  update: Prisma.XOR<Prisma.userUpdateWithoutDoctorInput, Prisma.userUncheckedUpdateWithoutDoctorInput>
+  create: Prisma.XOR<Prisma.userCreateWithoutDoctorInput, Prisma.userUncheckedCreateWithoutDoctorInput>
+  where?: Prisma.userWhereInput
+}
+
+export type userUpdateToOneWithWhereWithoutDoctorInput = {
+  where?: Prisma.userWhereInput
+  data: Prisma.XOR<Prisma.userUpdateWithoutDoctorInput, Prisma.userUncheckedUpdateWithoutDoctorInput>
+}
+
+export type userUpdateWithoutDoctorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.Enumrole_typeFieldUpdateOperationsInput | $Enums.role_type
+  status?: Prisma.Enumstatus_typeFieldUpdateOperationsInput | $Enums.status_type
+  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type userUncheckedUpdateWithoutDoctorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.Enumrole_typeFieldUpdateOperationsInput | $Enums.role_type
+  status?: Prisma.Enumstatus_typeFieldUpdateOperationsInput | $Enums.status_type
+  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -367,6 +449,7 @@ export type userSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   status?: boolean
   created_at?: boolean
   updated_at?: boolean
+  doctor?: boolean | Prisma.user$doctorArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type userSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -400,10 +483,17 @@ export type userSelectScalar = {
 }
 
 export type userOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "role" | "status" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
+export type userInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  doctor?: boolean | Prisma.user$doctorArgs<ExtArgs>
+}
+export type userIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type userIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $userPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "user"
-  objects: {}
+  objects: {
+    doctor: Prisma.$doctorPayload<ExtArgs> | null
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     email: string
@@ -806,6 +896,7 @@ readonly fields: userFieldRefs;
  */
 export interface Prisma__userClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  doctor<T extends Prisma.user$doctorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.user$doctorArgs<ExtArgs>>): Prisma.Prisma__doctorClient<runtime.Types.Result.GetResult<Prisma.$doctorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -859,6 +950,10 @@ export type userFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   omit?: Prisma.userOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.userInclude<ExtArgs> | null
+  /**
    * Filter, which user to fetch.
    */
   where: Prisma.userWhereUniqueInput
@@ -877,6 +972,10 @@ export type userFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.userOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.userInclude<ExtArgs> | null
+  /**
    * Filter, which user to fetch.
    */
   where: Prisma.userWhereUniqueInput
@@ -894,6 +993,10 @@ export type userFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the user
    */
   omit?: Prisma.userOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.userInclude<ExtArgs> | null
   /**
    * Filter, which user to fetch.
    */
@@ -943,6 +1046,10 @@ export type userFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   omit?: Prisma.userOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.userInclude<ExtArgs> | null
+  /**
    * Filter, which user to fetch.
    */
   where?: Prisma.userWhereInput
@@ -991,6 +1098,10 @@ export type userFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    */
   omit?: Prisma.userOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.userInclude<ExtArgs> | null
+  /**
    * Filter, which users to fetch.
    */
   where?: Prisma.userWhereInput
@@ -1033,6 +1144,10 @@ export type userCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * Omit specific fields from the user
    */
   omit?: Prisma.userOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.userInclude<ExtArgs> | null
   /**
    * The data needed to create a user.
    */
@@ -1081,6 +1196,10 @@ export type userUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * Omit specific fields from the user
    */
   omit?: Prisma.userOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.userInclude<ExtArgs> | null
   /**
    * The data needed to update a user.
    */
@@ -1148,6 +1267,10 @@ export type userUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.userOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.userInclude<ExtArgs> | null
+  /**
    * The filter to search for the user to update in case it exists.
    */
   where: Prisma.userWhereUniqueInput
@@ -1174,6 +1297,10 @@ export type userDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.userOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.userInclude<ExtArgs> | null
+  /**
    * Filter which user to delete.
    */
   where: Prisma.userWhereUniqueInput
@@ -1194,6 +1321,25 @@ export type userDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
+ * user.doctor
+ */
+export type user$doctorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the doctor
+   */
+  select?: Prisma.doctorSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the doctor
+   */
+  omit?: Prisma.doctorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.doctorInclude<ExtArgs> | null
+  where?: Prisma.doctorWhereInput
+}
+
+/**
  * user without action
  */
 export type userDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1205,4 +1351,8 @@ export type userDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Omit specific fields from the user
    */
   omit?: Prisma.userOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.userInclude<ExtArgs> | null
 }

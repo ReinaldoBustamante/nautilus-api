@@ -240,6 +240,7 @@ export type scheduleWhereInput = {
   is_available?: Prisma.BoolNullableFilter<"schedule"> | boolean | null
   created_at?: Prisma.DateTimeNullableFilter<"schedule"> | Date | string | null
   updated_at?: Prisma.DateTimeNullableFilter<"schedule"> | Date | string | null
+  doctor?: Prisma.XOR<Prisma.DoctorScalarRelationFilter, Prisma.doctorWhereInput>
 }
 
 export type scheduleOrderByWithRelationInput = {
@@ -251,10 +252,12 @@ export type scheduleOrderByWithRelationInput = {
   is_available?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrderInput | Prisma.SortOrder
   updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  doctor?: Prisma.doctorOrderByWithRelationInput
 }
 
 export type scheduleWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  doctor_id_day_of_week_start_time?: Prisma.scheduleDoctor_idDay_of_weekStart_timeCompoundUniqueInput
   AND?: Prisma.scheduleWhereInput | Prisma.scheduleWhereInput[]
   OR?: Prisma.scheduleWhereInput[]
   NOT?: Prisma.scheduleWhereInput | Prisma.scheduleWhereInput[]
@@ -265,7 +268,8 @@ export type scheduleWhereUniqueInput = Prisma.AtLeast<{
   is_available?: Prisma.BoolNullableFilter<"schedule"> | boolean | null
   created_at?: Prisma.DateTimeNullableFilter<"schedule"> | Date | string | null
   updated_at?: Prisma.DateTimeNullableFilter<"schedule"> | Date | string | null
-}, "id">
+  doctor?: Prisma.XOR<Prisma.DoctorScalarRelationFilter, Prisma.doctorWhereInput>
+}, "id" | "doctor_id_day_of_week_start_time">
 
 export type scheduleOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -299,13 +303,13 @@ export type scheduleScalarWhereWithAggregatesInput = {
 
 export type scheduleCreateInput = {
   id?: string
-  doctor_id: string
   day_of_week: number
   start_time: string
   end_time: string
   is_available?: boolean | null
   created_at?: Date | string | null
   updated_at?: Date | string | null
+  doctor: Prisma.doctorCreateNestedOneWithoutScheduleInput
 }
 
 export type scheduleUncheckedCreateInput = {
@@ -321,13 +325,13 @@ export type scheduleUncheckedCreateInput = {
 
 export type scheduleUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  doctor_id?: Prisma.StringFieldUpdateOperationsInput | string
   day_of_week?: Prisma.IntFieldUpdateOperationsInput | number
   start_time?: Prisma.StringFieldUpdateOperationsInput | string
   end_time?: Prisma.StringFieldUpdateOperationsInput | string
   is_available?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  doctor?: Prisma.doctorUpdateOneRequiredWithoutScheduleNestedInput
 }
 
 export type scheduleUncheckedUpdateInput = {
@@ -354,7 +358,6 @@ export type scheduleCreateManyInput = {
 
 export type scheduleUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  doctor_id?: Prisma.StringFieldUpdateOperationsInput | string
   day_of_week?: Prisma.IntFieldUpdateOperationsInput | number
   start_time?: Prisma.StringFieldUpdateOperationsInput | string
   end_time?: Prisma.StringFieldUpdateOperationsInput | string
@@ -372,6 +375,22 @@ export type scheduleUncheckedUpdateManyInput = {
   is_available?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type ScheduleListRelationFilter = {
+  every?: Prisma.scheduleWhereInput
+  some?: Prisma.scheduleWhereInput
+  none?: Prisma.scheduleWhereInput
+}
+
+export type scheduleOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type scheduleDoctor_idDay_of_weekStart_timeCompoundUniqueInput = {
+  doctor_id: string
+  day_of_week: number
+  start_time: string
 }
 
 export type scheduleCountOrderByAggregateInput = {
@@ -415,6 +434,48 @@ export type scheduleSumOrderByAggregateInput = {
   day_of_week?: Prisma.SortOrder
 }
 
+export type scheduleCreateNestedManyWithoutDoctorInput = {
+  create?: Prisma.XOR<Prisma.scheduleCreateWithoutDoctorInput, Prisma.scheduleUncheckedCreateWithoutDoctorInput> | Prisma.scheduleCreateWithoutDoctorInput[] | Prisma.scheduleUncheckedCreateWithoutDoctorInput[]
+  connectOrCreate?: Prisma.scheduleCreateOrConnectWithoutDoctorInput | Prisma.scheduleCreateOrConnectWithoutDoctorInput[]
+  createMany?: Prisma.scheduleCreateManyDoctorInputEnvelope
+  connect?: Prisma.scheduleWhereUniqueInput | Prisma.scheduleWhereUniqueInput[]
+}
+
+export type scheduleUncheckedCreateNestedManyWithoutDoctorInput = {
+  create?: Prisma.XOR<Prisma.scheduleCreateWithoutDoctorInput, Prisma.scheduleUncheckedCreateWithoutDoctorInput> | Prisma.scheduleCreateWithoutDoctorInput[] | Prisma.scheduleUncheckedCreateWithoutDoctorInput[]
+  connectOrCreate?: Prisma.scheduleCreateOrConnectWithoutDoctorInput | Prisma.scheduleCreateOrConnectWithoutDoctorInput[]
+  createMany?: Prisma.scheduleCreateManyDoctorInputEnvelope
+  connect?: Prisma.scheduleWhereUniqueInput | Prisma.scheduleWhereUniqueInput[]
+}
+
+export type scheduleUpdateManyWithoutDoctorNestedInput = {
+  create?: Prisma.XOR<Prisma.scheduleCreateWithoutDoctorInput, Prisma.scheduleUncheckedCreateWithoutDoctorInput> | Prisma.scheduleCreateWithoutDoctorInput[] | Prisma.scheduleUncheckedCreateWithoutDoctorInput[]
+  connectOrCreate?: Prisma.scheduleCreateOrConnectWithoutDoctorInput | Prisma.scheduleCreateOrConnectWithoutDoctorInput[]
+  upsert?: Prisma.scheduleUpsertWithWhereUniqueWithoutDoctorInput | Prisma.scheduleUpsertWithWhereUniqueWithoutDoctorInput[]
+  createMany?: Prisma.scheduleCreateManyDoctorInputEnvelope
+  set?: Prisma.scheduleWhereUniqueInput | Prisma.scheduleWhereUniqueInput[]
+  disconnect?: Prisma.scheduleWhereUniqueInput | Prisma.scheduleWhereUniqueInput[]
+  delete?: Prisma.scheduleWhereUniqueInput | Prisma.scheduleWhereUniqueInput[]
+  connect?: Prisma.scheduleWhereUniqueInput | Prisma.scheduleWhereUniqueInput[]
+  update?: Prisma.scheduleUpdateWithWhereUniqueWithoutDoctorInput | Prisma.scheduleUpdateWithWhereUniqueWithoutDoctorInput[]
+  updateMany?: Prisma.scheduleUpdateManyWithWhereWithoutDoctorInput | Prisma.scheduleUpdateManyWithWhereWithoutDoctorInput[]
+  deleteMany?: Prisma.scheduleScalarWhereInput | Prisma.scheduleScalarWhereInput[]
+}
+
+export type scheduleUncheckedUpdateManyWithoutDoctorNestedInput = {
+  create?: Prisma.XOR<Prisma.scheduleCreateWithoutDoctorInput, Prisma.scheduleUncheckedCreateWithoutDoctorInput> | Prisma.scheduleCreateWithoutDoctorInput[] | Prisma.scheduleUncheckedCreateWithoutDoctorInput[]
+  connectOrCreate?: Prisma.scheduleCreateOrConnectWithoutDoctorInput | Prisma.scheduleCreateOrConnectWithoutDoctorInput[]
+  upsert?: Prisma.scheduleUpsertWithWhereUniqueWithoutDoctorInput | Prisma.scheduleUpsertWithWhereUniqueWithoutDoctorInput[]
+  createMany?: Prisma.scheduleCreateManyDoctorInputEnvelope
+  set?: Prisma.scheduleWhereUniqueInput | Prisma.scheduleWhereUniqueInput[]
+  disconnect?: Prisma.scheduleWhereUniqueInput | Prisma.scheduleWhereUniqueInput[]
+  delete?: Prisma.scheduleWhereUniqueInput | Prisma.scheduleWhereUniqueInput[]
+  connect?: Prisma.scheduleWhereUniqueInput | Prisma.scheduleWhereUniqueInput[]
+  update?: Prisma.scheduleUpdateWithWhereUniqueWithoutDoctorInput | Prisma.scheduleUpdateWithWhereUniqueWithoutDoctorInput[]
+  updateMany?: Prisma.scheduleUpdateManyWithWhereWithoutDoctorInput | Prisma.scheduleUpdateManyWithWhereWithoutDoctorInput[]
+  deleteMany?: Prisma.scheduleScalarWhereInput | Prisma.scheduleScalarWhereInput[]
+}
+
 export type IntFieldUpdateOperationsInput = {
   set?: number
   increment?: number
@@ -425,6 +486,106 @@ export type IntFieldUpdateOperationsInput = {
 
 export type NullableBoolFieldUpdateOperationsInput = {
   set?: boolean | null
+}
+
+export type scheduleCreateWithoutDoctorInput = {
+  id?: string
+  day_of_week: number
+  start_time: string
+  end_time: string
+  is_available?: boolean | null
+  created_at?: Date | string | null
+  updated_at?: Date | string | null
+}
+
+export type scheduleUncheckedCreateWithoutDoctorInput = {
+  id?: string
+  day_of_week: number
+  start_time: string
+  end_time: string
+  is_available?: boolean | null
+  created_at?: Date | string | null
+  updated_at?: Date | string | null
+}
+
+export type scheduleCreateOrConnectWithoutDoctorInput = {
+  where: Prisma.scheduleWhereUniqueInput
+  create: Prisma.XOR<Prisma.scheduleCreateWithoutDoctorInput, Prisma.scheduleUncheckedCreateWithoutDoctorInput>
+}
+
+export type scheduleCreateManyDoctorInputEnvelope = {
+  data: Prisma.scheduleCreateManyDoctorInput | Prisma.scheduleCreateManyDoctorInput[]
+  skipDuplicates?: boolean
+}
+
+export type scheduleUpsertWithWhereUniqueWithoutDoctorInput = {
+  where: Prisma.scheduleWhereUniqueInput
+  update: Prisma.XOR<Prisma.scheduleUpdateWithoutDoctorInput, Prisma.scheduleUncheckedUpdateWithoutDoctorInput>
+  create: Prisma.XOR<Prisma.scheduleCreateWithoutDoctorInput, Prisma.scheduleUncheckedCreateWithoutDoctorInput>
+}
+
+export type scheduleUpdateWithWhereUniqueWithoutDoctorInput = {
+  where: Prisma.scheduleWhereUniqueInput
+  data: Prisma.XOR<Prisma.scheduleUpdateWithoutDoctorInput, Prisma.scheduleUncheckedUpdateWithoutDoctorInput>
+}
+
+export type scheduleUpdateManyWithWhereWithoutDoctorInput = {
+  where: Prisma.scheduleScalarWhereInput
+  data: Prisma.XOR<Prisma.scheduleUpdateManyMutationInput, Prisma.scheduleUncheckedUpdateManyWithoutDoctorInput>
+}
+
+export type scheduleScalarWhereInput = {
+  AND?: Prisma.scheduleScalarWhereInput | Prisma.scheduleScalarWhereInput[]
+  OR?: Prisma.scheduleScalarWhereInput[]
+  NOT?: Prisma.scheduleScalarWhereInput | Prisma.scheduleScalarWhereInput[]
+  id?: Prisma.UuidFilter<"schedule"> | string
+  doctor_id?: Prisma.UuidFilter<"schedule"> | string
+  day_of_week?: Prisma.IntFilter<"schedule"> | number
+  start_time?: Prisma.StringFilter<"schedule"> | string
+  end_time?: Prisma.StringFilter<"schedule"> | string
+  is_available?: Prisma.BoolNullableFilter<"schedule"> | boolean | null
+  created_at?: Prisma.DateTimeNullableFilter<"schedule"> | Date | string | null
+  updated_at?: Prisma.DateTimeNullableFilter<"schedule"> | Date | string | null
+}
+
+export type scheduleCreateManyDoctorInput = {
+  id?: string
+  day_of_week: number
+  start_time: string
+  end_time: string
+  is_available?: boolean | null
+  created_at?: Date | string | null
+  updated_at?: Date | string | null
+}
+
+export type scheduleUpdateWithoutDoctorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  day_of_week?: Prisma.IntFieldUpdateOperationsInput | number
+  start_time?: Prisma.StringFieldUpdateOperationsInput | string
+  end_time?: Prisma.StringFieldUpdateOperationsInput | string
+  is_available?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type scheduleUncheckedUpdateWithoutDoctorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  day_of_week?: Prisma.IntFieldUpdateOperationsInput | number
+  start_time?: Prisma.StringFieldUpdateOperationsInput | string
+  end_time?: Prisma.StringFieldUpdateOperationsInput | string
+  is_available?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type scheduleUncheckedUpdateManyWithoutDoctorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  day_of_week?: Prisma.IntFieldUpdateOperationsInput | number
+  start_time?: Prisma.StringFieldUpdateOperationsInput | string
+  end_time?: Prisma.StringFieldUpdateOperationsInput | string
+  is_available?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -438,6 +599,7 @@ export type scheduleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   is_available?: boolean
   created_at?: boolean
   updated_at?: boolean
+  doctor?: boolean | Prisma.doctorDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["schedule"]>
 
 export type scheduleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -449,6 +611,7 @@ export type scheduleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   is_available?: boolean
   created_at?: boolean
   updated_at?: boolean
+  doctor?: boolean | Prisma.doctorDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["schedule"]>
 
 export type scheduleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -460,6 +623,7 @@ export type scheduleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   is_available?: boolean
   created_at?: boolean
   updated_at?: boolean
+  doctor?: boolean | Prisma.doctorDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["schedule"]>
 
 export type scheduleSelectScalar = {
@@ -474,10 +638,21 @@ export type scheduleSelectScalar = {
 }
 
 export type scheduleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "doctor_id" | "day_of_week" | "start_time" | "end_time" | "is_available" | "created_at" | "updated_at", ExtArgs["result"]["schedule"]>
+export type scheduleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  doctor?: boolean | Prisma.doctorDefaultArgs<ExtArgs>
+}
+export type scheduleIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  doctor?: boolean | Prisma.doctorDefaultArgs<ExtArgs>
+}
+export type scheduleIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  doctor?: boolean | Prisma.doctorDefaultArgs<ExtArgs>
+}
 
 export type $schedulePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "schedule"
-  objects: {}
+  objects: {
+    doctor: Prisma.$doctorPayload<ExtArgs>
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     doctor_id: string
@@ -881,6 +1056,7 @@ readonly fields: scheduleFieldRefs;
  */
 export interface Prisma__scheduleClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  doctor<T extends Prisma.doctorDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.doctorDefaultArgs<ExtArgs>>): Prisma.Prisma__doctorClient<runtime.Types.Result.GetResult<Prisma.$doctorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -935,6 +1111,10 @@ export type scheduleFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   omit?: Prisma.scheduleOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.scheduleInclude<ExtArgs> | null
+  /**
    * Filter, which schedule to fetch.
    */
   where: Prisma.scheduleWhereUniqueInput
@@ -953,6 +1133,10 @@ export type scheduleFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensio
    */
   omit?: Prisma.scheduleOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.scheduleInclude<ExtArgs> | null
+  /**
    * Filter, which schedule to fetch.
    */
   where: Prisma.scheduleWhereUniqueInput
@@ -970,6 +1154,10 @@ export type scheduleFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Omit specific fields from the schedule
    */
   omit?: Prisma.scheduleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.scheduleInclude<ExtArgs> | null
   /**
    * Filter, which schedule to fetch.
    */
@@ -1019,6 +1207,10 @@ export type scheduleFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extension
    */
   omit?: Prisma.scheduleOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.scheduleInclude<ExtArgs> | null
+  /**
    * Filter, which schedule to fetch.
    */
   where?: Prisma.scheduleWhereInput
@@ -1067,6 +1259,10 @@ export type scheduleFindManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    */
   omit?: Prisma.scheduleOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.scheduleInclude<ExtArgs> | null
+  /**
    * Filter, which schedules to fetch.
    */
   where?: Prisma.scheduleWhereInput
@@ -1110,6 +1306,10 @@ export type scheduleCreateArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   omit?: Prisma.scheduleOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.scheduleInclude<ExtArgs> | null
+  /**
    * The data needed to create a schedule.
    */
   data: Prisma.XOR<Prisma.scheduleCreateInput, Prisma.scheduleUncheckedCreateInput>
@@ -1143,6 +1343,10 @@ export type scheduleCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extens
    */
   data: Prisma.scheduleCreateManyInput | Prisma.scheduleCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.scheduleIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1157,6 +1361,10 @@ export type scheduleUpdateArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Omit specific fields from the schedule
    */
   omit?: Prisma.scheduleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.scheduleInclude<ExtArgs> | null
   /**
    * The data needed to update a schedule.
    */
@@ -1209,6 +1417,10 @@ export type scheduleUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extens
    * Limit how many schedules to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.scheduleIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1223,6 +1435,10 @@ export type scheduleUpsertArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Omit specific fields from the schedule
    */
   omit?: Prisma.scheduleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.scheduleInclude<ExtArgs> | null
   /**
    * The filter to search for the schedule to update in case it exists.
    */
@@ -1249,6 +1465,10 @@ export type scheduleDeleteArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Omit specific fields from the schedule
    */
   omit?: Prisma.scheduleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.scheduleInclude<ExtArgs> | null
   /**
    * Filter which schedule to delete.
    */
@@ -1281,4 +1501,8 @@ export type scheduleDefaultArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Omit specific fields from the schedule
    */
   omit?: Prisma.scheduleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.scheduleInclude<ExtArgs> | null
 }

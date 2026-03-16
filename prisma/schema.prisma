@@ -18,6 +18,7 @@ model appointment {
   appointment_date DateTime                 @db.Timestamp(6)
   status           status_appointment_type? @default(PENDING)
   notes            String                   @db.VarChar(200)
+  doctor_comment   String?                  @db.VarChar(200)
   created_at       DateTime?                @db.Timestamp(6)
   updated_at       DateTime?                @db.Timestamp(6)
   doctor           doctor                   @relation(fields: [doctor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_appointment_doctor")
@@ -34,6 +35,8 @@ model doctor {
   created_at   DateTime?     @db.Timestamp(6)
   updated_at   DateTime?     @db.Timestamp(6)
   appointment  appointment[]
+  user         user          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_doctor_user")
+  schedule     schedule[]
 }
 
 model patient {
@@ -41,6 +44,7 @@ model patient {
   name         String        @db.VarChar(100)
   rut          String        @unique @db.VarChar(9)
   phone_number String        @db.VarChar(8)
+  email        String        @unique @db.VarChar(100)
   address      String        @db.VarChar(100)
   created_at   DateTime?     @db.Timestamp(6)
   updated_at   DateTime?     @db.Timestamp(6)
@@ -56,6 +60,9 @@ model schedule {
   is_available Boolean?  @default(true)
   created_at   DateTime? @db.Timestamp(6)
   updated_at   DateTime? @db.Timestamp(6)
+  doctor       doctor    @relation(fields: [doctor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_schedule_doctor")
+
+  @@unique([doctor_id, day_of_week, start_time], map: "unique_doctor_schedule")
 }
 
 model service {
@@ -77,6 +84,7 @@ model user {
   status     status_type @default(INACTIVE)
   created_at DateTime?   @db.Timestamp(6)
   updated_at DateTime?   @db.Timestamp(6)
+  doctor     doctor?
 }
 
 enum role_type {

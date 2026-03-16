@@ -902,6 +902,7 @@ export const AppointmentScalarFieldEnum = {
   appointment_date: 'appointment_date',
   status: 'status',
   notes: 'notes',
+  doctor_comment: 'doctor_comment',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const
@@ -927,6 +928,7 @@ export const PatientScalarFieldEnum = {
   name: 'name',
   rut: 'rut',
   phone_number: 'phone_number',
+  email: 'email',
   address: 'address',
   created_at: 'created_at',
   updated_at: 'updated_at'
