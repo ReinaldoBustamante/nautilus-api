@@ -263,6 +263,7 @@ export type appointmentOrderByWithRelationInput = {
 
 export type appointmentWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  doctor_id_appointment_date?: Prisma.appointmentDoctor_idAppointment_dateCompoundUniqueInput
   AND?: Prisma.appointmentWhereInput | Prisma.appointmentWhereInput[]
   OR?: Prisma.appointmentWhereInput[]
   NOT?: Prisma.appointmentWhereInput | Prisma.appointmentWhereInput[]
@@ -280,7 +281,7 @@ export type appointmentWhereUniqueInput = Prisma.AtLeast<{
   doctor?: Prisma.XOR<Prisma.DoctorScalarRelationFilter, Prisma.doctorWhereInput>
   patient?: Prisma.XOR<Prisma.PatientScalarRelationFilter, Prisma.patientWhereInput>
   service?: Prisma.XOR<Prisma.ServiceScalarRelationFilter, Prisma.serviceWhereInput>
-}, "id">
+}, "id" | "doctor_id_appointment_date">
 
 export type appointmentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -418,6 +419,11 @@ export type appointmentUncheckedUpdateManyInput = {
   doctor_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type appointmentDoctor_idAppointment_dateCompoundUniqueInput = {
+  doctor_id: string
+  appointment_date: Date | string
 }
 
 export type appointmentCountOrderByAggregateInput = {

@@ -21,13 +21,14 @@ export class UsersService {
     private readonly bcryptAdapter: BcryptAdapter
   ) { }
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto){
     const { password, ...restUser } = createUserDto
     try {
       const user = await this.prismaService.user.create({
         data: {
           ...restUser,
-          password: await this.bcryptAdapter.encryptPassword(password)
+          password: await this.bcryptAdapter.encryptPassword(password),
+          created_at: new Date()
         }
       })
       const { password: passwordHashed, ...userCreate } = user

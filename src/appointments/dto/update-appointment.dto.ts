@@ -1,4 +1,7 @@
-import { PartialType } from '@nestjs/mapped-types';
+import { PickType } from '@nestjs/swagger'
 import { CreateAppointmentDto } from './create-appointment.dto';
 
-export class UpdateAppointmentDto extends PartialType(CreateAppointmentDto) {}
+export class UpdateAppointmentDto extends PickType(
+  CreateAppointmentDto,
+  ['status'] as const,
+) {}

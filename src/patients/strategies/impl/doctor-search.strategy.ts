@@ -6,12 +6,15 @@ import { PrismaService } from "src/prisma.service";
 export class DoctorPatientsStrategy implements PatientsSearchStrategy {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll(doctorId: string) {
+  async findAll(userId: string) {
+  
     return this.prisma.patient.findMany({
       where: {
         appointment: {
             some: {
-                doctor_id: doctorId
+                doctor: {
+                  user_id: userId
+                }
             }
         }
       }

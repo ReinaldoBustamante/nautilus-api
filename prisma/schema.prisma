@@ -1,7 +1,8 @@
 generator client {
-  provider     = "prisma-client"
-  output       = "./generated"
-  moduleFormat = "cjs"
+  provider        = "prisma-client"
+  output          = "./generated"
+  previewFeatures = ["partialIndexes"]
+  moduleFormat    = "cjs"
 }
 
 datasource db {
@@ -24,6 +25,8 @@ model appointment {
   doctor           doctor                   @relation(fields: [doctor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_appointment_doctor")
   patient          patient                  @relation(fields: [patient_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_appointment_patient")
   service          service                  @relation(fields: [service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_appointment_service")
+
+  @@unique([doctor_id, appointment_date], map: "unique_active_appointment", where: raw("(status <> 'CANCELLED'::status_appointment_type)"))
 }
 
 model doctor {

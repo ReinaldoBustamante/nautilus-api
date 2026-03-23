@@ -7,17 +7,21 @@ import { RolesGuard } from 'src/common/guards/roles/roles.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { role_type } from 'prisma/generated/enums';
 import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 @Controller('appointments')
 export class AppointmentController {
   constructor(private readonly appointmentService: AppointmentService) { }
 
   @Post()
+  @ApiOperation({ description: 'Registra una nueva cita médica asociando un paciente, un doctor y un servicio. Valida disponibilidad y consistencia de los datos antes de su creación.'})
   @UseGuards(ThrottlerGuard)
   @Throttle({ default: { limit: 5, ttl: 60000 } })
   create(@Body() createAppointmentDto: CreateAppointmentDto) {
     return this.appointmentService.create(createAppointmentDto);
   }
 
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ description: '**Requiere rol DOCTOR.** \n\nRetorna el listado completo de citas asociadas al doctor autenticado.'})
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(role_type.DOCTOR)
   @Get()
@@ -26,6 +30,8 @@ export class AppointmentController {
     return this.appointmentService.findAll(userId);
   }
 
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ description: '**Requiere rol DOCTOR.** \n\nPermite actualizar el estado de una cita (`CONFIRMED`, `CANCELLED`, `COMPLETED`) y/o agregar notas adicionales.'})
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(role_type.DOCTOR)
   @Patch(':id')

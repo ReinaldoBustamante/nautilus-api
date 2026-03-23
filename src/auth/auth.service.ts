@@ -1,14 +1,10 @@
 import { Inject, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { JWTAdapter } from 'src/common/adapters/jwt.adapter';
-import { LoginResponse } from './responses/login.response';
 import { PrismaService } from 'src/prisma.service';
 import { BcryptAdapter } from 'src/common/adapters/bcrypt.adapter';
 import { Response, Request } from 'express'
 import type { RedisClientType } from 'redis';
-import { RefreshResponse } from './responses/refresh.response';
-import { ProfileResponse } from './responses/profile.response';
-
 
 type userPayload = {
   id: string,
@@ -28,7 +24,7 @@ export class AuthService {
     private readonly bcryptAdapter: BcryptAdapter,
   ) { }
 
-  async login(loginDto: LoginDto, res: Response): Promise<LoginResponse> {
+  async login(loginDto: LoginDto, res: Response){
     const user = await this.prismaService.user.findUnique({
       where: { email: loginDto.email }
     })
@@ -61,7 +57,7 @@ export class AuthService {
     }
   }
 
-  async logout(req: Request, res: Response): Promise<{ message: string }> {
+  async logout(req: Request, res: Response){
     const user = req['user'] as userPayload
 
     res.clearCookie('refresh_token', {
@@ -70,20 +66,19 @@ export class AuthService {
       sameSite: 'strict',
       path: '/',
     })
-
+    console.log(user)
     try {
       await this.redis.del(`refresh_token:${user.id}`)
+      return {
+        message: 'success'
+      };
     } catch (err) {
       console.log('Error de Redis:', err)
       throw err
     }
-
-    return {
-      message: 'success'
-    };
   }
 
-  async refresh(req: Request, res: Response): Promise<RefreshResponse> {
+  async refresh(req: Request, res: Response){
     const refresh_token = req.cookies['refresh_token']
     if (!refresh_token) throw new UnauthorizedException('refresh token not found')
 
@@ -124,7 +119,7 @@ export class AuthService {
     }
   }
 
-  async profile(req: Request): Promise<ProfileResponse> {
+  async profile(req: Request) {
     const user = req['user'] as userPayload
     const profile = await this.prismaService.doctor.findUnique({
       where: {
@@ -137,7 +132,8 @@ export class AuthService {
       email: user.email,
       name: profile.name,
       phone_number: profile.phone_number,
-      rut: profile.rut
+      rut: profile.rut,
+      role: user.role
     }
   }
 
