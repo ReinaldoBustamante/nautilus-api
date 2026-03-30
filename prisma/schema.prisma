@@ -25,8 +25,6 @@ model appointment {
   doctor           doctor                   @relation(fields: [doctor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_appointment_doctor")
   patient          patient                  @relation(fields: [patient_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_appointment_patient")
   service          service                  @relation(fields: [service_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_appointment_service")
-
-  @@unique([doctor_id, appointment_date], map: "unique_active_appointment", where: raw("(status <> 'CANCELLED'::status_appointment_type)"))
 }
 
 model doctor {
@@ -70,8 +68,9 @@ model schedule {
 
 model service {
   id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code        String        @db.VarChar(100)
   name        String        @db.VarChar(100)
-  description String        @db.VarChar(200)
+  description String
   price       Int
   is_active   Boolean?      @default(true)
   created_at  DateTime?     @db.Timestamp(6)

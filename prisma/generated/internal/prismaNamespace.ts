@@ -953,6 +953,7 @@ export type ScheduleScalarFieldEnum = (typeof ScheduleScalarFieldEnum)[keyof typ
 
 export const ServiceScalarFieldEnum = {
   id: 'id',
+  code: 'code',
   name: 'name',
   description: 'description',
   price: 'price',

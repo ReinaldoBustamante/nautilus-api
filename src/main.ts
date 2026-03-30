@@ -17,6 +17,8 @@ async function bootstrap() {
 
   const originsString = process.env.CORS_ORIGINS || '';
   const allowedOrigins = originsString.split(',');
+  const swaggerUser = process.env.SWAGGER_USER || '';
+  const swaggerPassword = process.env.SWAGGER_PASSWORD || '';
 
   app.enableCors({
     origin: allowedOrigins,
@@ -29,7 +31,7 @@ async function bootstrap() {
     ['/api'],
     basicAuth({
       users: {
-        admin: '1234', // usuario: contraseña
+        [swaggerUser]: swaggerPassword, // usuario: contraseña
       },
       challenge: true,
     }),
