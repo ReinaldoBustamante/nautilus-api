@@ -6,6 +6,10 @@ export class CreateServiceDto {
     @IsString()
     name: string
 
+    @ApiProperty({ example: 'Codigo del servicio' })
+    @IsString()
+    code: string
+
     @ApiProperty({ example: 'Descripcion del servicio' })
     @IsString()
     description: string

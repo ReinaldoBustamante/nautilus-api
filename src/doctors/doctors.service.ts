@@ -69,6 +69,7 @@ export class DoctorsService {
           appointment_date: {
             gte: new Date(),
           },
+          status: { not: 'CANCELLED' }
         },
         select: {
           appointment_date: true,

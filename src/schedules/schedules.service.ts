@@ -23,6 +23,7 @@ export class SchedulesService {
       })
       return schedule
     } catch (err) {
+      console.log(err)
       const handler = prismaErrorMap[err.code]
       if (handler) throw handler()
       throw err

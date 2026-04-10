@@ -15,7 +15,7 @@ async function bootstrap() {
     transform: true,
   }));
 
-  const originsString = process.env.CORS_ORIGINS || '';
+  const originsString = process.env.CORS_ORIGIN || '';
   const allowedOrigins = originsString.split(',');
   const swaggerUser = process.env.SWAGGER_USER || '';
   const swaggerPassword = process.env.SWAGGER_PASSWORD || '';
