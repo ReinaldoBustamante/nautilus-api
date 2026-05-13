@@ -11,10 +11,10 @@ export class PatientsService {
     private readonly strategyContext: PatientsStrategyContext
   ) { }
 
-  async findAll(req: Request) {
+  async findAll(req: Request, page: string, limit: string, rut_startWith: string) {
     const user = req['user'];
     const strategy = this.strategyContext.getStrategy(user.role);
-    return strategy.findAll(user.id);
+    return strategy.findAll(+page, +limit, rut_startWith, user.id);
   }
 
   async update(id: string, updatePatientDto: UpdatePatientDto, userId: string) {
@@ -42,7 +42,10 @@ export class PatientsService {
   async findAllPatientAppointments(patientId: string, userId: string) {
     try {
       const patientAppointments = await this.prismService.appointment.findMany({
-        where: { patient_id: patientId, doctor: { user_id: userId } }
+        where: { patient_id: patientId, doctor: { user_id: userId } },
+        include: {
+          service: true
+        }
       })
       return patientAppointments
     } catch (err) {

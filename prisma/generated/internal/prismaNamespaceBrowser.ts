@@ -96,6 +96,7 @@ export type AppointmentScalarFieldEnum = (typeof AppointmentScalarFieldEnum)[key
 export const DoctorScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  lastname: 'lastname',
   rut: 'rut',
   phone_number: 'phone_number',
   user_id: 'user_id',
@@ -109,7 +110,9 @@ export type DoctorScalarFieldEnum = (typeof DoctorScalarFieldEnum)[keyof typeof 
 export const PatientScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  lastname: 'lastname',
   rut: 'rut',
+  birthday: 'birthday',
   phone_number: 'phone_number',
   email: 'email',
   address: 'address',

@@ -3,5 +3,5 @@ import { CreateAppointmentDto } from './create-appointment.dto';
 
 export class UpdateAppointmentDto extends PickType(
   CreateAppointmentDto,
-  ['status'] as const,
+  ['status', 'doctor_comment'] as const,
 ) {}

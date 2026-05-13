@@ -8,7 +8,7 @@ export class CreateScheduleDto {
     @Min(0)
     @Max(6)
     @IsNotEmpty()
-    day_of_week: number
+    day_of_week!: number
 
     @ApiProperty({ example: "09:00" })
     @IsString()
@@ -16,7 +16,7 @@ export class CreateScheduleDto {
     @Matches(/^([01]\d|2[0-3]):([0-5]\d)$/, {
         message: 'El formato de hora debe ser HH:mm (ejemplo: 09:00)',
     })
-    start_time: string
+    start_time!: string
 
     @ApiProperty({ example: "10:00" })
     @IsString()
@@ -24,11 +24,11 @@ export class CreateScheduleDto {
     @Matches(/^([01]\d|2[0-3]):([0-5]\d)$/, {
         message: 'El formato de hora debe ser HH:mm (ejemplo: 09:00)',
     })
-    end_time: string
+    end_time!: string
 
     @ApiProperty({ example: true })
     @IsBoolean()
     @IsOptional()
-    is_available: boolean
+    is_available!: boolean
 
 }

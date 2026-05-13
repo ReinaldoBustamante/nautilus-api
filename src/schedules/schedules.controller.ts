@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Put } from '@nestjs/common';
 import { SchedulesService } from './schedules.service';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
@@ -7,6 +7,7 @@ import { RolesGuard } from 'src/common/guards/roles/roles.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { role_type } from 'prisma/generated/enums';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { BulkSyncDto } from './dto/bulk-sync.dto';
 
 
 @ApiBearerAuth('access_token')
@@ -33,6 +34,13 @@ export class SchedulesController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateScheduleDto: UpdateScheduleDto) {
     return this.schedulesService.update(id, updateScheduleDto);
+  }
+
+  @ApiOperation({ description: '**Requiere rol DOCTOR.** \n\nPermite modificar horas o disponibilidad de un bloque horario.'})
+  @Put('')
+  bulkSync(@Body() bulkSyncDto: BulkSyncDto, @Req() req: Request) {
+    const userId = req['user'].id
+    return this.schedulesService.bulkSync(bulkSyncDto, userId)
   }
 
   @ApiOperation({ description: '**Requiere rol DOCTOR.** \n\nElimina un bloque horario del sistema.'})

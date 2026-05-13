@@ -1,4 +1,4 @@
 // patients-search.strategy.ts
 export interface PatientsSearchStrategy {
-  findAll(userId: string): Promise<any>
+  findAll(page: number, limit:number, rut_startWith: string, userId?: string): Promise<any>
 }

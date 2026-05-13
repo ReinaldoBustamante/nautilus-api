@@ -9,23 +9,62 @@ const bcrypt = new BcryptAdapter()
 
 async function main() {
   console.log(`Start seeding ...`);
-  const { ADMIN_EMAIL, ADMIN_PASSWORD } = process.env;
+  const {
+    ADMIN_EMAIL,
+    ADMIN_PASSWORD,
+    DOCTOR_EMAIL,
+    DOCTOR_PASSWORD,
+    DOCTOR_NAME,
+    DOCTOR_LASTNAME,
+    DOCTOR_RUT,
+    DOCTOR_PHONE,
+
+  } = process.env;
   if (!ADMIN_EMAIL) throw new Error('ADMIN_EMAIL is required');
   if (!ADMIN_PASSWORD) throw new Error('ADMIN_PASSWORD is required');
+  if (!DOCTOR_EMAIL) throw new Error('DOCTOR_EMAIL is required');
+  if (!DOCTOR_PASSWORD) throw new Error('DOCTOR_PASSWORD is required');
+  if (!DOCTOR_NAME) throw new Error('DOCTOR_NAME is required');
+  if (!DOCTOR_LASTNAME) throw new Error('DOCTOR_LASTNAME is required');
+  if (!DOCTOR_RUT) throw new Error('DOCTOR_RUT is required');
+  if (!DOCTOR_PHONE) throw new Error('DOCTOR_PHONE is required');
 
   console.log(`Creating user.`);
-  await prisma.user.create({
-    data: {
+  const createdUsers = await prisma.user.createManyAndReturn({
+    data: [
+      {
         email: ADMIN_EMAIL,
         password: await bcrypt.encryptPassword(ADMIN_PASSWORD),
         role: 'ADMIN',
         status: 'ACTIVE',
         created_at: new Date()
+      },
+      {
+        email: DOCTOR_EMAIL,
+        password: await bcrypt.encryptPassword(DOCTOR_PASSWORD),
+        role: 'DOCTOR',
+        status: 'ACTIVE',
+        created_at: new Date()
+      }
+    ]
+  })
+
+  console.log(`Creating doctor.`);
+  const userId = createdUsers.find(u => u.role === 'DOCTOR')?.id;
+  await prisma.doctor.create({
+    data: {
+      name: DOCTOR_NAME,
+      lastname: DOCTOR_LASTNAME,
+      phone_number: DOCTOR_PHONE,
+      rut: DOCTOR_PHONE,
+      user: {
+        connect: { id: userId } 
+      },
+      created_at: new Date()
     }
   })
 
   console.log('Creating default services')
-
   await prisma.service.createMany({
     data: [
       {

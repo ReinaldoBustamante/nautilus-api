@@ -6,7 +6,7 @@ import { PrismaService } from "src/prisma.service";
 export class AdminPatientsStrategy implements PatientsSearchStrategy {
     constructor(private readonly prisma: PrismaService) { }
 
-    async findAll() {
+    async findAll(page: number, limit: number) {
         return this.prisma.patient.findMany();
     }
 }

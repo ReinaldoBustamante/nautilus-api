@@ -30,6 +30,7 @@ model appointment {
 model doctor {
   id           String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name         String        @db.VarChar(100)
+  lastname     String        @db.VarChar(100)
   rut          String        @unique @db.VarChar(9)
   phone_number String        @db.VarChar(8)
   user_id      String        @unique @db.Uuid
@@ -43,7 +44,9 @@ model doctor {
 model patient {
   id           String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name         String        @db.VarChar(100)
+  lastname     String        @db.VarChar(100)
   rut          String        @unique @db.VarChar(9)
+  birthday     DateTime      @db.Timestamp(6)
   phone_number String        @db.VarChar(8)
   email        String        @unique @db.VarChar(100)
   address      String        @db.VarChar(100)

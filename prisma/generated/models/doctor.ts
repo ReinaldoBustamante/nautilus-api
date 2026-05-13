@@ -27,6 +27,7 @@ export type AggregateDoctor = {
 export type DoctorMinAggregateOutputType = {
   id: string | null
   name: string | null
+  lastname: string | null
   rut: string | null
   phone_number: string | null
   user_id: string | null
@@ -37,6 +38,7 @@ export type DoctorMinAggregateOutputType = {
 export type DoctorMaxAggregateOutputType = {
   id: string | null
   name: string | null
+  lastname: string | null
   rut: string | null
   phone_number: string | null
   user_id: string | null
@@ -47,6 +49,7 @@ export type DoctorMaxAggregateOutputType = {
 export type DoctorCountAggregateOutputType = {
   id: number
   name: number
+  lastname: number
   rut: number
   phone_number: number
   user_id: number
@@ -59,6 +62,7 @@ export type DoctorCountAggregateOutputType = {
 export type DoctorMinAggregateInputType = {
   id?: true
   name?: true
+  lastname?: true
   rut?: true
   phone_number?: true
   user_id?: true
@@ -69,6 +73,7 @@ export type DoctorMinAggregateInputType = {
 export type DoctorMaxAggregateInputType = {
   id?: true
   name?: true
+  lastname?: true
   rut?: true
   phone_number?: true
   user_id?: true
@@ -79,6 +84,7 @@ export type DoctorMaxAggregateInputType = {
 export type DoctorCountAggregateInputType = {
   id?: true
   name?: true
+  lastname?: true
   rut?: true
   phone_number?: true
   user_id?: true
@@ -162,6 +168,7 @@ export type doctorGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type DoctorGroupByOutputType = {
   id: string
   name: string
+  lastname: string
   rut: string
   phone_number: string
   user_id: string
@@ -193,6 +200,7 @@ export type doctorWhereInput = {
   NOT?: Prisma.doctorWhereInput | Prisma.doctorWhereInput[]
   id?: Prisma.UuidFilter<"doctor"> | string
   name?: Prisma.StringFilter<"doctor"> | string
+  lastname?: Prisma.StringFilter<"doctor"> | string
   rut?: Prisma.StringFilter<"doctor"> | string
   phone_number?: Prisma.StringFilter<"doctor"> | string
   user_id?: Prisma.UuidFilter<"doctor"> | string
@@ -206,6 +214,7 @@ export type doctorWhereInput = {
 export type doctorOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  lastname?: Prisma.SortOrder
   rut?: Prisma.SortOrder
   phone_number?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
@@ -224,6 +233,7 @@ export type doctorWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.doctorWhereInput[]
   NOT?: Prisma.doctorWhereInput | Prisma.doctorWhereInput[]
   name?: Prisma.StringFilter<"doctor"> | string
+  lastname?: Prisma.StringFilter<"doctor"> | string
   phone_number?: Prisma.StringFilter<"doctor"> | string
   created_at?: Prisma.DateTimeNullableFilter<"doctor"> | Date | string | null
   updated_at?: Prisma.DateTimeNullableFilter<"doctor"> | Date | string | null
@@ -235,6 +245,7 @@ export type doctorWhereUniqueInput = Prisma.AtLeast<{
 export type doctorOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  lastname?: Prisma.SortOrder
   rut?: Prisma.SortOrder
   phone_number?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
@@ -251,6 +262,7 @@ export type doctorScalarWhereWithAggregatesInput = {
   NOT?: Prisma.doctorScalarWhereWithAggregatesInput | Prisma.doctorScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"doctor"> | string
   name?: Prisma.StringWithAggregatesFilter<"doctor"> | string
+  lastname?: Prisma.StringWithAggregatesFilter<"doctor"> | string
   rut?: Prisma.StringWithAggregatesFilter<"doctor"> | string
   phone_number?: Prisma.StringWithAggregatesFilter<"doctor"> | string
   user_id?: Prisma.UuidWithAggregatesFilter<"doctor"> | string
@@ -261,6 +273,7 @@ export type doctorScalarWhereWithAggregatesInput = {
 export type doctorCreateInput = {
   id?: string
   name: string
+  lastname: string
   rut: string
   phone_number: string
   created_at?: Date | string | null
@@ -273,6 +286,7 @@ export type doctorCreateInput = {
 export type doctorUncheckedCreateInput = {
   id?: string
   name: string
+  lastname: string
   rut: string
   phone_number: string
   user_id: string
@@ -285,6 +299,7 @@ export type doctorUncheckedCreateInput = {
 export type doctorUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   rut?: Prisma.StringFieldUpdateOperationsInput | string
   phone_number?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -297,6 +312,7 @@ export type doctorUpdateInput = {
 export type doctorUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   rut?: Prisma.StringFieldUpdateOperationsInput | string
   phone_number?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
@@ -309,6 +325,7 @@ export type doctorUncheckedUpdateInput = {
 export type doctorCreateManyInput = {
   id?: string
   name: string
+  lastname: string
   rut: string
   phone_number: string
   user_id: string
@@ -319,6 +336,7 @@ export type doctorCreateManyInput = {
 export type doctorUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   rut?: Prisma.StringFieldUpdateOperationsInput | string
   phone_number?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -328,6 +346,7 @@ export type doctorUpdateManyMutationInput = {
 export type doctorUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   rut?: Prisma.StringFieldUpdateOperationsInput | string
   phone_number?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
@@ -343,6 +362,7 @@ export type DoctorScalarRelationFilter = {
 export type doctorCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  lastname?: Prisma.SortOrder
   rut?: Prisma.SortOrder
   phone_number?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
@@ -353,6 +373,7 @@ export type doctorCountOrderByAggregateInput = {
 export type doctorMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  lastname?: Prisma.SortOrder
   rut?: Prisma.SortOrder
   phone_number?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
@@ -363,6 +384,7 @@ export type doctorMaxOrderByAggregateInput = {
 export type doctorMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  lastname?: Prisma.SortOrder
   rut?: Prisma.SortOrder
   phone_number?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
@@ -438,6 +460,7 @@ export type doctorUncheckedUpdateOneWithoutUserNestedInput = {
 export type doctorCreateWithoutAppointmentInput = {
   id?: string
   name: string
+  lastname: string
   rut: string
   phone_number: string
   created_at?: Date | string | null
@@ -449,6 +472,7 @@ export type doctorCreateWithoutAppointmentInput = {
 export type doctorUncheckedCreateWithoutAppointmentInput = {
   id?: string
   name: string
+  lastname: string
   rut: string
   phone_number: string
   user_id: string
@@ -476,6 +500,7 @@ export type doctorUpdateToOneWithWhereWithoutAppointmentInput = {
 export type doctorUpdateWithoutAppointmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   rut?: Prisma.StringFieldUpdateOperationsInput | string
   phone_number?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -487,6 +512,7 @@ export type doctorUpdateWithoutAppointmentInput = {
 export type doctorUncheckedUpdateWithoutAppointmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   rut?: Prisma.StringFieldUpdateOperationsInput | string
   phone_number?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
@@ -498,6 +524,7 @@ export type doctorUncheckedUpdateWithoutAppointmentInput = {
 export type doctorCreateWithoutScheduleInput = {
   id?: string
   name: string
+  lastname: string
   rut: string
   phone_number: string
   created_at?: Date | string | null
@@ -509,6 +536,7 @@ export type doctorCreateWithoutScheduleInput = {
 export type doctorUncheckedCreateWithoutScheduleInput = {
   id?: string
   name: string
+  lastname: string
   rut: string
   phone_number: string
   user_id: string
@@ -536,6 +564,7 @@ export type doctorUpdateToOneWithWhereWithoutScheduleInput = {
 export type doctorUpdateWithoutScheduleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   rut?: Prisma.StringFieldUpdateOperationsInput | string
   phone_number?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -547,6 +576,7 @@ export type doctorUpdateWithoutScheduleInput = {
 export type doctorUncheckedUpdateWithoutScheduleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   rut?: Prisma.StringFieldUpdateOperationsInput | string
   phone_number?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
@@ -558,6 +588,7 @@ export type doctorUncheckedUpdateWithoutScheduleInput = {
 export type doctorCreateWithoutUserInput = {
   id?: string
   name: string
+  lastname: string
   rut: string
   phone_number: string
   created_at?: Date | string | null
@@ -569,6 +600,7 @@ export type doctorCreateWithoutUserInput = {
 export type doctorUncheckedCreateWithoutUserInput = {
   id?: string
   name: string
+  lastname: string
   rut: string
   phone_number: string
   created_at?: Date | string | null
@@ -596,6 +628,7 @@ export type doctorUpdateToOneWithWhereWithoutUserInput = {
 export type doctorUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   rut?: Prisma.StringFieldUpdateOperationsInput | string
   phone_number?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -607,6 +640,7 @@ export type doctorUpdateWithoutUserInput = {
 export type doctorUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
   rut?: Prisma.StringFieldUpdateOperationsInput | string
   phone_number?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -658,6 +692,7 @@ export type DoctorCountOutputTypeCountScheduleArgs<ExtArgs extends runtime.Types
 export type doctorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  lastname?: boolean
   rut?: boolean
   phone_number?: boolean
   user_id?: boolean
@@ -672,6 +707,7 @@ export type doctorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type doctorSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  lastname?: boolean
   rut?: boolean
   phone_number?: boolean
   user_id?: boolean
@@ -683,6 +719,7 @@ export type doctorSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type doctorSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  lastname?: boolean
   rut?: boolean
   phone_number?: boolean
   user_id?: boolean
@@ -694,6 +731,7 @@ export type doctorSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type doctorSelectScalar = {
   id?: boolean
   name?: boolean
+  lastname?: boolean
   rut?: boolean
   phone_number?: boolean
   user_id?: boolean
@@ -701,7 +739,7 @@ export type doctorSelectScalar = {
   updated_at?: boolean
 }
 
-export type doctorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "rut" | "phone_number" | "user_id" | "created_at" | "updated_at", ExtArgs["result"]["doctor"]>
+export type doctorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "lastname" | "rut" | "phone_number" | "user_id" | "created_at" | "updated_at", ExtArgs["result"]["doctor"]>
 export type doctorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   appointment?: boolean | Prisma.doctor$appointmentArgs<ExtArgs>
   user?: boolean | Prisma.userDefaultArgs<ExtArgs>
@@ -725,6 +763,7 @@ export type $doctorPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
+    lastname: string
     rut: string
     phone_number: string
     user_id: string
@@ -1158,6 +1197,7 @@ export interface Prisma__doctorClient<T, Null = never, ExtArgs extends runtime.T
 export interface doctorFieldRefs {
   readonly id: Prisma.FieldRef<"doctor", 'String'>
   readonly name: Prisma.FieldRef<"doctor", 'String'>
+  readonly lastname: Prisma.FieldRef<"doctor", 'String'>
   readonly rut: Prisma.FieldRef<"doctor", 'String'>
   readonly phone_number: Prisma.FieldRef<"doctor", 'String'>
   readonly user_id: Prisma.FieldRef<"doctor", 'String'>
