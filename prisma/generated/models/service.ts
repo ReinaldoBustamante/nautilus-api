@@ -257,10 +257,10 @@ export type serviceOrderByWithRelationInput = {
 
 export type serviceWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  code?: string
   AND?: Prisma.serviceWhereInput | Prisma.serviceWhereInput[]
   OR?: Prisma.serviceWhereInput[]
   NOT?: Prisma.serviceWhereInput | Prisma.serviceWhereInput[]
-  code?: Prisma.StringFilter<"service"> | string
   name?: Prisma.StringFilter<"service"> | string
   description?: Prisma.StringFilter<"service"> | string
   price?: Prisma.IntFilter<"service"> | number
@@ -268,7 +268,7 @@ export type serviceWhereUniqueInput = Prisma.AtLeast<{
   created_at?: Prisma.DateTimeNullableFilter<"service"> | Date | string | null
   updated_at?: Prisma.DateTimeNullableFilter<"service"> | Date | string | null
   appointment?: Prisma.AppointmentListRelationFilter
-}, "id">
+}, "id" | "code">
 
 export type serviceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

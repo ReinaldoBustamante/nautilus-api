@@ -71,7 +71,7 @@ model schedule {
 
 model service {
   id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  code        String        @db.VarChar(100)
+  code        String        @db.VarChar(100) @unique
   name        String        @db.VarChar(100)
   description String
   price       Int
