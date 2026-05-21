@@ -24,7 +24,7 @@ export class AuthService {
     private readonly bcryptAdapter: BcryptAdapter,
   ) { }
 
-  async login(loginDto: LoginDto, res: Response){
+  async login(loginDto: LoginDto, res: Response) {
     const user = await this.prismaService.user.findUnique({
       where: { email: loginDto.email }
     })
@@ -39,8 +39,8 @@ export class AuthService {
 
     res.cookie('refresh_token', refresh_token, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'strict',
+      secure: true,
+      sameSite: 'none',
       maxAge: 1000 * 60 * 60 * 24 * 7
     })
 
@@ -57,13 +57,13 @@ export class AuthService {
     }
   }
 
-  async logout(req: Request, res: Response){
+  async logout(req: Request, res: Response) {
     const user = req['user'] as userPayload
 
     res.clearCookie('refresh_token', {
       httpOnly: true,
-      secure: false,
-      sameSite: 'strict',
+      secure: true,
+      sameSite: 'none',
       path: '/',
     })
     console.log(user)
@@ -78,7 +78,7 @@ export class AuthService {
     }
   }
 
-  async refresh(req: Request, res: Response){
+  async refresh(req: Request, res: Response) {
     const refresh_token = req.cookies['refresh_token']
     if (!refresh_token) throw new UnauthorizedException('refresh token not found')
 
@@ -102,8 +102,8 @@ export class AuthService {
 
     res.cookie('refresh_token', new_refresh_token, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'strict',
+      secure: true,
+      sameSite: 'none',
       maxAge: 1000 * 60 * 60 * 24 * 7
     })
 
